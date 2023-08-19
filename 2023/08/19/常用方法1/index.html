@@ -6,17 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>搭建Hexo博客流程 | Hexo</title>
+  <title>常用类：String，Date，Comparable | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="搭建Hexo博客流程 参考： 【手把手教你从0开始搭建自己的个人博客 |无坑版视频教程| hexo】 【超详细的个人博客搭建教程（无需服务器）- 从原理到实践手把手带你搭建属于自己的个人博客】">
+  <meta name="description" content="0807 String,StringBuffer,StringBuilder util.Date,sql.Date,Calendar Comparable,Comparator  A.String1.常用方法1234567891011121314151617181920212223import java.nio.charset.StandardCharsets;public class T01 &amp;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="搭建Hexo博客流程">
-<meta property="og:url" content="http://example.com/2023/08/03/%E6%90%AD%E5%BB%BAHexo%E5%8D%9A%E5%AE%A2%E6%B5%81%E7%A8%8B/index.html">
+<meta property="og:title" content="常用类：String，Date，Comparable">
+<meta property="og:url" content="http://example.com/2023/08/19/%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%951/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="搭建Hexo博客流程 参考： 【手把手教你从0开始搭建自己的个人博客 |无坑版视频教程| hexo】 【超详细的个人博客搭建教程（无需服务器）- 从原理到实践手把手带你搭建属于自己的个人博客】">
+<meta property="og:description" content="0807 String,StringBuffer,StringBuilder util.Date,sql.Date,Calendar Comparable,Comparator  A.String1.常用方法1234567891011121314151617181920212223import java.nio.charset.StandardCharsets;public class T01 &amp;">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-08-03T13:12:30.000Z">
-<meta property="article:modified_time" content="2023-08-03T14:20:46.625Z">
+<meta property="article:published_time" content="2023-08-19T11:33:30.000Z">
+<meta property="article:modified_time" content="2023-08-19T11:33:09.986Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -154,79 +154,109 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-搭建Hexo博客流程" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-常用方法1" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      搭建Hexo博客流程
+      常用类：String，Date，Comparable
     </h1>
   
 
         
-        <a href="/2023/08/03/%E6%90%AD%E5%BB%BAHexo%E5%8D%9A%E5%AE%A2%E6%B5%81%E7%A8%8B/" class="archive-article-date">
-  	<time datetime="2023-08-03T13:12:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-03</time>
+        <a href="/2023/08/19/%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%951/" class="archive-article-date">
+  	<time datetime="2023-08-19T11:33:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="搭建Hexo博客流程"><a href="#搭建Hexo博客流程" class="headerlink" title="搭建Hexo博客流程"></a>搭建Hexo博客流程</h1><ul>
-<li>参考：<ol>
-<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Yb411a7ty/?share_source=copy_web&vd_source=da34bd61c349c020df024282b8963885">【手把手教你从0开始搭建自己的个人博客 |无坑版视频教程| hexo】</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1qD4y1z783/?share_source=copy_web&vd_source=da34bd61c349c020df024282b8963885">【超详细的个人博客搭建教程（无需服务器）- 从原理到实践手把手带你搭建属于自己的个人博客】</a></li>
-</ol>
-</li>
+        <h1 id="0807"><a href="#0807" class="headerlink" title="0807"></a>0807</h1><ul>
+<li>String,StringBuffer,StringBuilder</li>
+<li>util.Date,sql.Date,Calendar</li>
+<li>Comparable,Comparator</li>
 </ul>
-<span id="more"></span>
-<h2 id="1-安装Git"><a href="#1-安装Git" class="headerlink" title="1. 安装Git"></a>1. 安装Git</h2><h2 id="2-配置Node-js环境"><a href="#2-配置Node-js环境" class="headerlink" title="2. 配置Node.js环境"></a>2. 配置Node.js环境</h2><ul>
-<li>node.js:JavaScript运行环境</li>
-<li>npm:一个包管理器</li>
-<li>Mac电脑最好提前安装homebrew，或者直接从Node.js官网下载</li>
-</ul>
-<ol>
-<li>使用homebrew配置node.js环境: <code>brew install node</code></li>
-<li>确认是否安装成功： <code>node -v</code> 和 <code>npm -v</code></li>
-<li>npm默认使用国外源，按需配置国内下载源</li>
-</ol>
-<h2 id="3-安装hexo"><a href="#3-安装hexo" class="headerlink" title="3. 安装hexo"></a>3. 安装hexo</h2><ul>
-<li>使用npm安装hexo： <code>npm install hexo-cli -g</code></li>
-</ul>
-<h2 id="4-使用hexo搭建博客"><a href="#4-使用hexo搭建博客" class="headerlink" title="4.使用hexo搭建博客"></a>4.使用hexo搭建博客</h2><ul>
-<li>使用cmd工具创建并cd到博客路径下</li>
+<h2 id="A-String"><a href="#A-String" class="headerlink" title="A.String"></a>A.String</h2><h3 id="1-常用方法"><a href="#1-常用方法" class="headerlink" title="1.常用方法"></a>1.常用方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.nio.charset.StandardCharsets;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">T01</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;dasdaDASdsa&quot;</span>;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">            1.String与char[],byte[],String[]互转</span></span><br><span class="line"><span class="comment">            多用于遍历和排序</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="type">char</span>[] c = s.toCharArray();</span><br><span class="line">        <span class="type">String</span> <span class="variable">s2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(c, <span class="number">0</span>, c.length);</span><br><span class="line">        <span class="type">byte</span>[] b = s.getBytes(StandardCharsets.UTF_8);</span><br><span class="line">        <span class="type">String</span> <span class="variable">s3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(b, <span class="number">0</span>, b.length);</span><br><span class="line">        String[] s6 = s.split(<span class="string">&quot;&quot;</span>);</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">            2.其他</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">s4</span> <span class="operator">=</span> s.trim();<span class="comment">//去除空格</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">s5</span> <span class="operator">=</span> s.substring(<span class="number">2</span>, <span class="number">3</span>);<span class="comment">//左闭右开</span></span><br><span class="line">        s.contains(<span class="string">&quot;Sd&quot;</span>);</span><br><span class="line">        s.indexOf(<span class="string">&quot;DA&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-练习题"><a href="#2-练习题" class="headerlink" title="2.练习题"></a>2.练习题</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">4.获取两个字符串中最大相同子串。比如：</span><br><span class="line">str1 = &quot;abcwerthelloyuiodef“;str2 = &quot;cvhellobnm“</span><br><span class="line">提示：将短的那个串进行长度依次递减的子串与较长的串比较。</span><br></pre></td></tr></table></figure>
+
+<h2 id="B-StringBuffer-StringBuilder"><a href="#B-StringBuffer-StringBuilder" class="headerlink" title="B.StringBuffer,StringBuilder"></a>B.StringBuffer,StringBuilder</h2><ul>
+<li>StringBuffer,旧方法,线程安全</li>
+<li>StringBuilder,新方法,线程不安全</li>
 </ul>
 <ol>
-<li><code>mkdir blog</code></li>
-<li><code>cd blog</code></li>
-<li>生成博客: <code>hexo init</code></li>
-<li>本地启动博客：  <code>hexo s</code></li>
+<li>常用方法</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 3.5.1 增</span></span><br><span class="line"><span class="comment"> * append(&quot;&quot;),insert(2,&quot;ab&quot;)</span></span><br><span class="line"><span class="comment"> * 3.5.2 删</span></span><br><span class="line"><span class="comment"> * delete(int start, int end)左闭右开,deleteCharAt(2)</span></span><br><span class="line"><span class="comment"> * 3.5.3 改</span></span><br><span class="line"><span class="comment"> * replace(2,3,&quot;hello&quot;),reverse(),setCharAt(0,&#x27;a&#x27;)</span></span><br><span class="line"><span class="comment"> * 3.5.4 查</span></span><br><span class="line"><span class="comment"> * indexOf(&quot;aa&quot;),lastIndexOf(&quot;bb&quot;),charAt()</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>实现原理</li>
 </ol>
 <ul>
-<li>之后出现任何问题，删除blog文件夹并重复以上步骤重新搭建即可</li>
+<li>1.底层是一个char[]数组</li>
+<li><ol start="2">
+<li>都继承自AbstractStringBuilder</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>效率对比:StringBuilder(1.5) &gt; StringBuffer(1.0) &gt; String(1.0)</li>
+</ol>
+</li>
+<li></li>
+<li><ol start="2">
+<li>默认初始大小?</li>
+</ol>
+</li>
+<li>2.1 无参,没有指定父类默认给一个16位的char[],</li>
+<li>2.2 指定长度的:</li>
+<li>2.3 直接给个字符串:字符串的长度+16</li>
+<li></li>
+<li><ol start="3">
+<li>Append超出16位怎么办</li>
+</ol>
+</li>
+<li>3.1 会调用一个ensureCapacityInternal()确认append之后的容量大小</li>
+<li>3.2 Arrays.copy方法,新的长度会左移一位,oldLength*2+2</li>
+<li>3.3 如果再大,甚至超出int范围,就抛出异常OutofMemory</li>
+<li></li>
+<li>3.4.1 Append扩容,原来的数组长度*2+2,然后把旧的copy进去</li>
+<li>3.4.2 这样的话如果原来的字符串特别长100万,扩容后200万,再复制,效率会很慢</li>
+<li>3.4.3 因此如果已知字符串长度,应该考虑使用带参的两个方法</li>
 </ul>
-<h2 id="5-把Hexo博客推到Github上去"><a href="#5-把Hexo博客推到Github上去" class="headerlink" title="5.把Hexo博客推到Github上去"></a>5.把Hexo博客推到Github上去</h2><h3 id="5-1-创建仓库"><a href="#5-1-创建仓库" class="headerlink" title="5.1 创建仓库"></a>5.1 创建仓库</h3><ul>
-<li>创建仓库，仓库名必须符合这个格式<code>YourUserName.github.io</code>,其他都选默默认即可</li>
-</ul>
-<h3 id="5-2-为你的Mac电脑配置GitHub的SSH"><a href="#5-2-为你的Mac电脑配置GitHub的SSH" class="headerlink" title="5.2 为你的Mac电脑配置GitHub的SSH"></a>5.2 为你的Mac电脑配置GitHub的SSH</h3><ul>
-<li>参考： <a target="_blank" rel="noopener" href="https://juejin.cn/post/6993506356279902244">在mac电脑下配置github的ssh</a></li>
-<li>GitHub -&gt; Setting -&gt; SSH and GPG keys</li>
-</ul>
-<h3 id="5-3-安装hexo-deployer-git插件"><a href="#5-3-安装hexo-deployer-git插件" class="headerlink" title="5.3 安装hexo-deployer-git插件"></a>5.3 安装hexo-deployer-git插件</h3><ul>
-<li>返回到cmd里，执行 <code>npm install --save hexo-deployer-git</code></li>
-</ul>
-<h3 id="5-4-设置配置文件-config-yml"><a href="#5-4-设置配置文件-config-yml" class="headerlink" title="5.4 设置配置文件_config.yml"></a>5.4 设置配置文件<code>_config.yml</code></h3><ul>
-<li>打开文件，滚动到最底部</li>
-<li>修改后：<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Deployment</span></span><br><span class="line"><span class="comment">## Docs: https://hexo.io/docs/one-command-deployment</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">git@github.com:YourUserName/YourUserName.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="5-5-部署到GitHub"><a href="#5-5-部署到GitHub" class="headerlink" title="5.5 部署到GitHub"></a>5.5 部署到GitHub</h3><ul>
-<li>如果之前在你的电脑上没有用过git，可能需要在cmd中输入以下代码<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.email &quot;YourEmail&quot;</span><br><span class="line">git config --global user.name &quot;YourUserName&quot;</span><br></pre></td></tr></table></figure></li>
-<li>使用<code>hexo d</code>部署，按照提示输入GitHub账号密码,然后就成功了</li>
-</ul>
-<h3 id="5-6-如果hexo-d失败了"><a href="#5-6-如果hexo-d失败了" class="headerlink" title="5.6 如果hexo d失败了"></a>5.6 如果<code>hexo d</code>失败了</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo cl</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+<h2 id="C-Date"><a href="#C-Date" class="headerlink" title="C. Date"></a>C. Date</h2><h3 id="1-util-Date-sql-Date"><a href="#1-util-Date-sql-Date" class="headerlink" title="1. util.Date, sql.Date"></a>1. util.Date, sql.Date</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">T06_Date</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">//1.util.Date,只有这一种创建方法</span></span><br><span class="line">        <span class="type">Date</span> <span class="variable">d1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="number">1691376169832L</span>);</span><br><span class="line">        System.out.println(d1.getTime());<span class="comment">//又必须用getTime()才能获得时间戳</span></span><br><span class="line">        <span class="comment">//2.sql.Date 有一种可以直接解析的方法</span></span><br><span class="line">        java.sql.<span class="type">Date</span> <span class="variable">d2</span> <span class="operator">=</span> java.sql.Date.valueOf(<span class="string">&quot;2023-08-05&quot;</span>);</span><br><span class="line">        <span class="comment">//2.1 util.Date -&gt; sql.Date</span></span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">java</span>.sql.Date(d1.getTime());</span><br><span class="line">        <span class="comment">//2.2 sql.Date -&gt; util.Date</span></span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">java</span>.util.Date(d2.getTime());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//3.日期格式化(需要SimpleDateFormat)</span></span><br><span class="line">        <span class="type">SimpleDateFormat</span> <span class="variable">df1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SimpleDateFormat</span>(<span class="string">&quot;yyyy年MM月dd日 HH:mm:ss&quot;</span>);<span class="comment">//带参的格式</span></span><br><span class="line">        <span class="type">Date</span> <span class="variable">d3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line">        System.out.println(df.format(d1));</span><br><span class="line">        <span class="comment">//4.字符串解析,下面是util.date用的</span></span><br><span class="line">        <span class="type">Date</span> <span class="variable">d4</span> <span class="operator">=</span> df.parse(<span class="string">&quot;2023年08月10日 22:27:16&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<h3 id="2-Calendar"><a href="#2-Calendar" class="headerlink" title="2. Calendar"></a>2. Calendar</h3><ol>
+<li>特点</li>
+</ol>
+<ul>
+<li>Calendar是个抽象类,只能用getInstance()工厂方法获得实例</li>
+<li>线程不安全</li>
+<li>Calendar对存储的日期是可变的,这意味着一旦更改就不知道改之前是什么了</li>
+</ul>
+<ol start="2">
+<li>构造器与常用方法</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Calendar;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">T08_Calendar</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">//A.构造器</span></span><br><span class="line">        <span class="comment">//1.使用提供的方法</span></span><br><span class="line">        <span class="type">Calendar</span> <span class="variable">c</span> <span class="operator">=</span> Calendar.getInstance();<span class="comment">//推荐</span></span><br><span class="line">        <span class="comment">//2.使用唯一的子类</span></span><br><span class="line">        <span class="type">Calendar</span> <span class="variable">c1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">GregorianCalendar</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//B.常用方法</span></span><br><span class="line">        <span class="comment">//1. 设置</span></span><br><span class="line">        c.set(Calendar.YEAR, <span class="number">2023</span>);</span><br><span class="line">        <span class="comment">//2. 读取</span></span><br><span class="line">        c.get(Calendar.MONTH) + <span class="number">1</span>;<span class="comment">//月份少一个月的问题</span></span><br><span class="line">        <span class="comment">//2.1 获得某个月最后一天</span></span><br><span class="line">        c.getActualMaximum(Calendar.DAY_OF_MONTH);</span><br><span class="line">        <span class="comment">//3. 日期计算</span></span><br><span class="line">        c.add(Calendar.DATE, -<span class="number">1</span>);<span class="comment">//这些操作都是直接修改原对象</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">//C.与Date互转</span></span><br><span class="line">        <span class="comment">//1. Calendar -&gt; Date</span></span><br><span class="line">        <span class="type">Date</span> <span class="variable">d1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>(c.getTime());</span><br><span class="line">        <span class="comment">//2. Date -&gt; Calendar</span></span><br><span class="line">        <span class="type">Calendar</span> <span class="variable">c2</span> <span class="operator">=</span> Calendar.getInstance();</span><br><span class="line">        c2.setTime(d1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="jdk8提供了一些新的日期类"><a href="#jdk8提供了一些新的日期类" class="headerlink" title="jdk8提供了一些新的日期类"></a>jdk8提供了一些新的日期类</h3><ul>
+<li>LocalDate&#x2F;LocalTime&#x2F;LocalDateTime</li>
+<li>DateTimeFormat</li>
+<li>Period&#x2F;Duration</li>
+</ul>
+<h2 id="D-Comparable-Comparator"><a href="#D-Comparable-Comparator" class="headerlink" title="D. Comparable,Comparator"></a>D. Comparable,Comparator</h2><ul>
+<li>引用类型比较大小</li>
+</ul>
+<ul>
+<li>自然排序Comparable, 定制排序Comparator</li>
+<li>1.Comparable接口 CompareTo()</li>
+<li>像是String包装类等等都实现了Comparable接口</li>
+<li>2.Comparator compare()</li>
+<li>比如想倒叙排序就需要使用定制的comparator</li>
+<li>Arrays.sort(goods); Arrays.sort(goods,new Comparable<Good>);<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
 
       
 
@@ -306,7 +336,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2023/08/03/%E6%90%AD%E5%BB%BAHexo%E5%8D%9A%E5%AE%A2%E6%B5%81%E7%A8%8B/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2023/08/19/%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%951/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -320,18 +350,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2023/08/19/%E5%90%84%E7%A7%8D%E8%BD%AC%E6%8D%A2/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2023/08/19/%E8%8C%83%E5%9E%8B%E6%9E%9A%E4%B8%BE%E6%B3%A8%E8%A7%A3/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Java常用类型转换
+          范型，枚举，注解
         
       </div>
     </a>
   
   
-    <a href="/2023/08/03/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Hello World</div>
+    <a href="/2023/08/19/%E5%90%8C%E6%AD%A5%E4%B8%8E%E7%BA%BF%E7%A8%8B%E9%80%9A%E8%AE%AF/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">同步与线程通讯</div>
       <i class="icon-circle-right"></i>
     </a>
   
