@@ -6,17 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>文件，IO流 | Hexo</title>
+  <title>转换流对象流标准流 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="0810 File对象 字节流,字符流 抽象基类,访问文件,缓冲流   操作数据单位:字节流,字符流 数据的流向:输入流,输出流 流的角色:节点流,处理流">
+  <meta name="description" content="转换流 作用 字符流操作起来更简单(可以一行一行地读),因此提供了字节流-&gt;字符流地方法 也能对编码方式进行转换 ( UTF-8-&gt;字节流-&gt;通过转换流转字符流-&gt;GBK-&gt;字符-&gt;字节 )   实现 InputStreamReader(字节流,编码):   InputStream-&gt;Reader OutputStreamWriter:  OutputS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="文件，IO流">
-<meta property="og:url" content="http://example.com/2023/08/19/IO%E6%B5%811/index.html">
+<meta property="og:title" content="转换流对象流标准流">
+<meta property="og:url" content="http://example.com/2023/08/19/10.IO%E6%B5%812/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="0810 File对象 字节流,字符流 抽象基类,访问文件,缓冲流   操作数据单位:字节流,字符流 数据的流向:输入流,输出流 流的角色:节点流,处理流">
+<meta property="og:description" content="转换流 作用 字符流操作起来更简单(可以一行一行地读),因此提供了字节流-&gt;字符流地方法 也能对编码方式进行转换 ( UTF-8-&gt;字节流-&gt;通过转换流转字符流-&gt;GBK-&gt;字符-&gt;字节 )   实现 InputStreamReader(字节流,编码):   InputStream-&gt;Reader OutputStreamWriter:  OutputS">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-08-19T10:40:30.000Z">
-<meta property="article:modified_time" content="2023-08-19T14:18:03.610Z">
+<meta property="article:published_time" content="2023-08-19T10:41:30.000Z">
+<meta property="article:modified_time" content="2024-03-03T01:33:23.026Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -154,107 +154,85 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-IO流1" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-10.IO流2" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      文件，IO流
+      转换流对象流标准流
     </h1>
   
 
         
-        <a href="/2023/08/19/IO%E6%B5%811/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:40:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
+        <a href="/2023/08/19/10.IO%E6%B5%812/" class="archive-article-date">
+  	<time datetime="2023-08-19T10:41:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="0810"><a href="#0810" class="headerlink" title="0810"></a>0810</h1><ul>
-<li>File对象</li>
-<li>字节流,字符流</li>
-<li>抽象基类,访问文件,缓冲流</li>
-</ul>
-<ol>
-<li>操作数据单位:字节流,字符流</li>
-<li>数据的流向:输入流,输出流</li>
-<li>流的角色:节点流,处理流</li>
+        <ol start="4">
+<li>转换流<ol>
+<li>作用<ol>
+<li>字符流操作起来更简单(可以一行一行地读),因此提供了字节流-&gt;字符流地方法</li>
+<li>也能对编码方式进行转换 ( UTF-8-&gt;字节流-&gt;通过转换流转字符流-&gt;GBK-&gt;字符-&gt;字节 )</li>
+</ol>
+</li>
+<li>实现<ol>
+<li>InputStreamReader(字节流,编码):   InputStream-&gt;Reader</li>
+<li>OutputStreamWriter:  OutputStream-&gt;Writer</li>
+</ol>
+</li>
+<li>GBK-&gt;UTF-8</li>
+</ol>
+</li>
 </ol>
 <span id="more"></span>
 
-<h2 id=""><a href="#" class="headerlink" title=""></a></h2><table>
-<thead>
-<tr>
-<th>基本抽象</th>
-<th>文件节点流</th>
-<th>文件处理流&#x2F;缓冲流</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>InputStream</td>
-<td>FileInputStream</td>
-<td>BufferedInputStream</td>
-</tr>
-<tr>
-<td>OutputStream</td>
-<td>FileOutputStream</td>
-<td>BufferedOutputStream</td>
-</tr>
-<tr>
-<td>Reader</td>
-<td>FileReader</td>
-<td>BufferedReader</td>
-</tr>
-<tr>
-<td>Writer</td>
-<td>FileWriter</td>
-<td>BufferedWriter</td>
-</tr>
-</tbody></table>
-<h2 id="字节流与字符流的区别"><a href="#字节流与字符流的区别" class="headerlink" title="字节流与字符流的区别"></a>字节流与字符流的区别</h2><h2 id="四个父类"><a href="#四个父类" class="headerlink" title="四个父类"></a>四个父类</h2><ol>
-<li>字节流 8bit 一个一个操作<ol>
-<li>InputStream</li>
-<li>OutputStream</li>
-</ol>
-</li>
-<li>字符流 16bit 两个两个操作<ol>
-<li>Reader</li>
-<li>Writer</li>
-</ol>
-</li>
-</ol>
-<ul>
-<li>字符流Test,只能用于处理文本文件,字符流&#x3D;字节流+解码的过程,处理图片之类的二进制文件会发生乱码</li>
-<li>字节流Test,没有解码过程,可以用来处理二进制文件</li>
-</ul>
-<h2 id="文件读取过程"><a href="#文件读取过程" class="headerlink" title="文件读取过程"></a>文件读取过程</h2><pre><code>    /*
-    1.创建File对象(文件必须存在)
-    2.创建相应的输入流,将file对象作为参数
-    3.具体读入过程 无参的read()方法一次读一个,读到-1为止
-    4.关闭流资源
-     */
+<pre><code class="java">class Test&#123;
+    public void test1() throws IOException &#123;
+        File f1 = new File(&quot;C:\\Users\\Admin\\IdeaProjects\\TestProject\\src\\TR0811&quot;,&quot;dbcp_gbk.txt&quot;);
+        File f2 = new File(&quot;C:\\Users\\Admin\\IdeaProjects\\TestProject\\src\\TR0811&quot;,&quot;dbcp_utf_8.txt&quot;);
+        /*
+        A.读文件操作
+        1. 文件 -&gt; 字节流
+        2. 使用转换流的方法InputStreamReader(字节流,编码),获得一个转码后的字符流(字符流FileReader继承InputStreamReader)
+        3. 把字符流包装成缓冲字符流便于操作
+         */
+        //1, new一个字节流FileInputStream
+        FileInputStream fis = new FileInputStream(f1);
+        //2. 和缓冲流差不多,把FileInputStream当作参数new一个转换流
+        InputStreamReader isr = new InputStreamReader(fis,&quot;gbk&quot;);//默认是UTF-8,为了读入不要有乱码,这里指定成GBK
+        //3. 把转换流当作参数new一个缓冲流以方便操作
+        BufferedReader br = new BufferedReader(isr);
+
+        //B.写文件操作,简略写法是下面这样的
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f2),&quot;utf-8&quot;));//这里的utf-8也可以不写
+
+        String content =null;
+        while ((content=br.readLine())!=null)&#123;
+            bw.write(content);
+            bw.newLine();
+            bw.flush();//随时刷新,close里面用的就是这个方法
+        &#125;
+        br.close();//不关占内存
+        bw.close();//不关不往里面写
+    &#125;
+&#125;    
 </code></pre>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">        缓冲流复制文件的例子</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">copy</span>&#123;</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">myCopyFile2</span><span class="params">(File srcFile, File descFile)</span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="type">BufferedReader</span> <span class="variable">br</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">      <span class="type">BufferedWriter</span> <span class="variable">bw</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">         <span class="comment">//缓冲流其实是包装了文件输入流,因此对象是FileReader</span></span><br><span class="line">         br = <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(<span class="keyword">new</span> <span class="title class_">FileReader</span>(srcFile));</span><br><span class="line">         bw = <span class="keyword">new</span> <span class="title class_">BufferedWriter</span>(<span class="keyword">new</span> <span class="title class_">FileWriter</span>(descFile));</span><br><span class="line">         <span class="comment">//1. 字节流的写法</span></span><br><span class="line"><span class="comment">//            byte[] b = new byte[1024];    //和磁盘分片有关</span></span><br><span class="line"><span class="comment">//            int len = -1;</span></span><br><span class="line"><span class="comment">//            while ((len= br.read(b))!=-1)&#123;    //读到-1说明读完了</span></span><br><span class="line"><span class="comment">//                //fw.write(new String(c,0,len));</span></span><br><span class="line"><span class="comment">//                bw.write(b,0,len);//只要没有解码就不会出现乱码</span></span><br><span class="line"><span class="comment">//            &#125;</span></span><br><span class="line">         <span class="comment">//2. 字符流的写法</span></span><br><span class="line">         <span class="type">String</span> <span class="variable">content</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">         <span class="keyword">while</span> ((content = br.readLine())!=<span class="literal">null</span>)&#123;   <span class="comment">//缓冲字符流特有的一次读一行的方法</span></span><br><span class="line">            bw.write(content);</span><br><span class="line">            bw.newLine();   <span class="comment">//打印换行符,只是替换掉println(换行符)而已</span></span><br><span class="line">         &#125;</span><br><span class="line">      &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">         e.printStackTrace();</span><br><span class="line">      &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="comment">/*</span></span><br><span class="line"><span class="comment">            先打开的后关闭原则,因此先关闭写入流</span></span><br><span class="line"><span class="comment">            另外注意两个close不能写到一个try里面,不然上面的如果失败,下面的就不工作了</span></span><br><span class="line"><span class="comment">             */</span></span><br><span class="line">         <span class="keyword">try</span> &#123;</span><br><span class="line">            bw.close(); <span class="comment">//不关不往里面写</span></span><br><span class="line">         &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">try</span> &#123;</span><br><span class="line">            br.close();<span class="comment">//不关占内存</span></span><br><span class="line">         &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="缓冲流的优势"><a href="#缓冲流的优势" class="headerlink" title="缓冲流的优势"></a>缓冲流的优势</h2><ul>
-<li>1.字节缓冲流</li>
-<li>处理流,是对字节流的包装</li>
-<li></li>
-<li>里面定义了一个8kb的数组,先把数组先放到8kb的缓冲数组里,当8kb的数组满了,才会一次性取得,因此速度快(相当于水桶)</li>
-<li>这个8kb可以通过构造函数来修改</li>
-<li>之前是每次读取1024,取到内存里面,取得次数多了</li>
-<li></li>
-<li>与FileInputStream相比,这个明显更快</li>
-<li></li>
-<li></li>
-<li><ol start="2">
-<li>字符缓冲流</li>
-</ol>
-</li>
+<ol start="5">
+<li>对象流<ul>
+<li>对象-&gt;序列化-&gt;保存到文件里</li>
 </ul>
+</li>
+<li>标准输入输出流<ul>
+<li>System.in System.out表示标准输入输出设备</li>
+</ul>
+</li>
+</ol>
 
       
 
@@ -313,7 +291,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2023/08/19/IO%E6%B5%811/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2023/08/19/10.IO%E6%B5%812/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -327,18 +305,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2023/08/19/IO%E6%B5%812/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          转换流对象流标准流
-        
-      </div>
-    </a>
   
-  
-    <a href="/2023/08/19/%E8%8C%83%E5%9E%8B%E6%9E%9A%E4%B8%BE%E6%B3%A8%E8%A7%A3/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">范型，枚举，注解</div>
+    <a href="/2023/08/19/9.IO%E6%B5%811/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">文件，IO流</div>
       <i class="icon-circle-right"></i>
     </a>
   
