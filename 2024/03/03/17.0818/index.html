@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives: 2023/8 | Hitokui&#39;s Blog</title>
+  <title>数据库 5 | Hitokui&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hitokui&#39;s Blog">
-<meta property="og:url" content="http://example.com/archives/2023/08/index.html">
+  <meta name="description" content="0818 Oracle的函数 使用序列SEQUENCE实现自增">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库 5">
+<meta property="og:url" content="http://example.com/2024/03/03/17.0818/index.html">
 <meta property="og:site_name" content="Hitokui&#39;s Blog">
+<meta property="og:description" content="0818 Oracle的函数 使用序列SEQUENCE实现自增">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-03-03T07:51:30.000Z">
+<meta property="article:modified_time" content="2024-03-03T07:51:00.497Z">
 <meta property="article:author" content="Hitokui">
-<meta property="article:tag" content="Blog, Java">
+<meta property="article:tag" content="MYSQL">
+<meta property="article:tag" content="Oracle">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Hitokui&#39;s Blog" type="application/atom+xml">
@@ -168,512 +173,227 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-17.0818" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      数据库 5
+    </h1>
+  
+
+        
+        <a href="/2024/03/03/17.0818/" class="archive-article-date">
+  	<time datetime="2024-03-03T07:51:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-03-03</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="0818"><a href="#0818" class="headerlink" title="0818"></a>0818</h1><ul>
+<li>Oracle的函数</li>
+<li>使用序列SEQUENCE实现自增<span id="more"></span></li>
+</ul>
+<h4 id="1-Oracle-和-MYSQL的区别"><a href="#1-Oracle-和-MYSQL的区别" class="headerlink" title="1. Oracle 和 MYSQL的区别"></a>1. Oracle 和 MYSQL的区别</h4><ul>
+<li>number,varcher2</li>
+<li>oracle 两个隔离级别 mysql 4个</li>
+<li>oracle SELECT后面需要跟FROM,可以用虚拟表dual</li>
+<li>oracle sysdate, mysql NOW()</li>
+<li>COMMIT的自动与手动</li>
+</ul>
+<h4 id="2-ORACLE的函数"><a href="#2-ORACLE的函数" class="headerlink" title="2. ORACLE的函数"></a>2. ORACLE的函数</h4><ol>
+<li><p>字符串函数</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> INITCAP(<span class="string">&#x27;hello world&#x27;</span>) <span class="keyword">FROM</span> dual; <span class="comment">-- 只把第一个字母大写</span></span><br><span class="line"><span class="keyword">SELECT</span> ename <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> ename <span class="operator">=</span> <span class="string">&#x27;smith&#x27;</span>; <span class="comment">-- ORACLE在WINDOWS平台区分大小写</span></span><br><span class="line"><span class="keyword">SELECT</span> ename <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> ename <span class="operator">=</span> <span class="built_in">UPPER</span>(<span class="string">&#x27;smith&#x27;</span>);</span><br><span class="line"><span class="keyword">SELECT</span> INSTR(<span class="string">&#x27;hellllo&#x27;</span>,<span class="string">&#x27;l&#x27;</span>,<span class="number">4</span>,<span class="number">2</span>) <span class="keyword">FROM</span> dual;</span><br></pre></td></tr></table></figure></li>
+<li><p>数值函数</p>
+</li>
+<li><p>日期函数</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> sysdate <span class="operator">-</span> hiredate <span class="keyword">FROM</span> emp;</span><br><span class="line"><span class="comment">-- 2.查询部门10,20的员工截止到2000年1月1日，工作了多少个月，入职的月份。(提示：使用months_between,extract)</span></span><br><span class="line"><span class="keyword">SELECT</span> MONTHS_BETWEEN(<span class="string">&#x27;1-1月-2000&#x27;</span>,hiredate), <span class="built_in">EXTRACT</span>(<span class="keyword">MONTH</span> <span class="keyword">FROM</span> hiredate)<span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> deptno <span class="keyword">IN</span>(<span class="number">10</span>,<span class="number">20</span>);</span><br><span class="line"><span class="comment">-- 3.如果员工试用期6个月，查询职位不是MANAGER的员工姓名，入职日期，转正日期，入职日期后的第一个星期一,入职当月的最后一天日期。（提示：使用add_months,next_day,last_day)</span></span><br><span class="line"><span class="keyword">SELECT</span> ename,hiredate,ADD_MONTHS(hiredate,<span class="number">6</span>),NEXT_DAY(hiredate,<span class="string">&#x27;星期一&#x27;</span>) ,LAST_DAY(hiredate) </span><br><span class="line">    <span class="keyword">FROM</span> emp a</span><br><span class="line">    <span class="keyword">WHERE</span> a.empno <span class="keyword">NOT</span> <span class="keyword">IN</span>(<span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> mgr <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> mgr <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span>);</span><br></pre></td></tr></table></figure></li>
+<li><p>显式转换</p>
+<ol>
+<li>TO_INT,没什么用,隐式转换可以替代这个</li>
+<li>– TO_CHAR, 日期的格式化,金额的格式化 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">to_char(sysdate,<span class="string">&#x27;YYYY-MM-DD HH24:mi:mm&#x27;</span>)</span><br><span class="line">TO_CHAR(sysdate,<span class="string">&#x27;DAY&#x27;</span>)</span><br><span class="line">TO_CHAR(sal,<span class="string">&#x27;L999,999.99&#x27;</span>) <span class="comment">-- ￥999,999.99</span></span><br><span class="line">trunc(sysdate <span class="operator">-</span> to_date(<span class="string">&#x27;2015-3月-18 13:13:13&#x27;</span>,<span class="string">&#x27;yyyy-mm&quot;月&quot;-dd hh24:mi:ss&#x27;</span>)) <span class="keyword">as</span> 相差的天数</span><br></pre></td></tr></table></figure></li>
+<li>– TO_DATE, 解析一个日期 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">to_date(<span class="string">&#x27;2015-3月-18 13:13:13&#x27;</span>,<span class="string">&#x27;yyyy-mm&quot;月&quot;-dd hh24:mi:ss&#x27;</span>) <span class="keyword">as</span> 日期</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p>序列 SEQUENCE</p>
+</li>
+</ol>
+<ul>
+<li>因为Oracle没有AUTO_INCREAMENT,为了实现自增需要用到序列<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 序列的一些参数</span></span><br><span class="line"><span class="keyword">CREATE</span> SEQUENCE seq_users2</span><br><span class="line"><span class="keyword">START</span> <span class="keyword">WITH</span> <span class="number">5</span> <span class="comment">-- 第一次循环从5开始 5,10,15,20,3,8,13</span></span><br><span class="line">MINVALUE <span class="number">3</span> <span class="comment">-- 超出最大范围后,循环的第二次开始初始值为3</span></span><br><span class="line">MAXVALUE <span class="number">22</span></span><br><span class="line">INCREMENT <span class="keyword">BY</span> <span class="number">5</span></span><br><span class="line"><span class="keyword">CYCLE</span></span><br><span class="line">NOCACHE; <span class="comment">-- 默认缓存,这里关掉缓存</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> seq_emp. <span class="keyword">from</span> dual;</span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> t_user <span class="keyword">VALUES</span> (seq_userid.nextval, <span class="string">&#x27;bill&#x27;</span>, <span class="string">&#x27;222&#x27;</span>, <span class="string">&#x27;0&#x27;</span>, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><p>GUID(),字符串主键</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">table</span> users1(</span><br><span class="line">    id varchar2(<span class="number">40</span>) <span class="keyword">DEFAULT</span> SYS_GUID() <span class="keyword">primary</span> key,  <span class="comment">-- 32位</span></span><br><span class="line">    name varchar2(<span class="number">20</span>) <span class="keyword">not</span> <span class="keyword">null</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>分级查询</p>
+</li>
+</ol>
+<ul>
+<li>分级查询,分层查询 ORACLE专用的</li>
+<li>emp是一个树形结构,一个Boss-&gt;多个经理-&gt;多个员工<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 从上往下</span></span><br><span class="line"><span class="keyword">SELECT</span> empno, ename, job, mgr, LEVEL</span><br><span class="line">    <span class="keyword">FROM</span> emp</span><br><span class="line">    <span class="keyword">START</span> <span class="keyword">WITH</span> empno <span class="operator">=</span> <span class="number">7839</span> <span class="comment">-- 先给一个起始的根节点</span></span><br><span class="line">    <span class="keyword">CONNECT</span> <span class="keyword">BY</span> PRIOR empno <span class="operator">=</span> mgr; <span class="comment">-- 指定存在父与子行的关系列,那STARTWITH的empno = 其他行的mgr</span></span><br></pre></td></tr></table></figure></li>
+<li>注意<code>CONNECT BY PRIOR  mgr = empno;</code>,这里等号两边的顺序很重要,现在时从下往上</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2023" class="archive-year">2023</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/10.IO%E6%B5%812/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:41:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/10.IO%E6%B5%812/">转换流对象流标准流</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MYSQL</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Oracle</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        			<a href="/categories/数据库//" class="article-tag-list-link color4">数据库</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2024/03/03/17.0818/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/9.IO%E6%B5%811/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:40:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2024/03/03/18.0821/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          数据库 6
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/03/03/16.0817/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">数据库 4</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/9.IO%E6%B5%811/">文件，IO流</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0818"><span class="toc-number">1.</span> <span class="toc-text">0818</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-Oracle-%E5%92%8C-MYSQL%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.0.0.1.</span> <span class="toc-text">1. Oracle 和 MYSQL的区别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-ORACLE%E7%9A%84%E5%87%BD%E6%95%B0"><span class="toc-number">1.0.0.2.</span> <span class="toc-text">2. ORACLE的函数</span></a></li></ol></li></ol></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/6.%E8%8C%83%E5%9E%8B%E6%9E%9A%E4%B8%BE%E6%B3%A8%E8%A7%A3/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:34:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/6.%E8%8C%83%E5%9E%8B%E6%9E%9A%E4%B8%BE%E6%B3%A8%E8%A7%A3/">范型，枚举，注解</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/4.%E5%B8%B8%E7%94%A8%E7%B1%BB/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:33:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/4.%E5%B8%B8%E7%94%A8%E7%B1%BB/">常用类：String，Date，Comparable</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/7.%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:29:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/7.%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/8.%E5%90%8C%E6%AD%A5%E4%B8%8E%E7%BA%BF%E7%A8%8B%E9%80%9A%E8%AE%AF/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:29:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/8.%E5%90%8C%E6%AD%A5%E4%B8%8E%E7%BA%BF%E7%A8%8B%E9%80%9A%E8%AE%AF/">同步与线程通讯</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/3.mac%E5%BF%AB%E6%8D%B7%E9%94%AE/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:27:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/3.mac%E5%BF%AB%E6%8D%B7%E9%94%AE/">Mac常用快捷键</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Mac</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Readme//" class="article-tag-list-link color2">Readme</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/5.Java%E5%B8%B8%E7%94%A8%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:25:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/5.Java%E5%B8%B8%E7%94%A8%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/">Java常用类型转换</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/03/2.%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="archive-article-date">
-  	<time datetime="2023-08-03T12:12:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/03/2.%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">博客搭建</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Readme//" class="article-tag-list-link color2">Readme</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/03/1.hello-world/" class="archive-article-date">
-  	<time datetime="2023-08-03T11:24:06.693Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/03/1.hello-world/">Hello World</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Readme//" class="article-tag-list-link color2">Readme</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -696,8 +416,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

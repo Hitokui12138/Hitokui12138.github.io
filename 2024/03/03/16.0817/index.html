@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives: 2023/8 | Hitokui&#39;s Blog</title>
+  <title>数据库 4 | Hitokui&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hitokui&#39;s Blog">
-<meta property="og:url" content="http://example.com/archives/2023/08/index.html">
+  <meta name="description" content="0807 建表时的六种约束 VIEW 索引 INDEX 触发器 TRIGGER 存储过程 PROCEDURE if,while,case when   事务 TRANSACTION">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库 4">
+<meta property="og:url" content="http://example.com/2024/03/03/16.0817/index.html">
 <meta property="og:site_name" content="Hitokui&#39;s Blog">
+<meta property="og:description" content="0807 建表时的六种约束 VIEW 索引 INDEX 触发器 TRIGGER 存储过程 PROCEDURE if,while,case when   事务 TRANSACTION">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-03-03T07:50:30.000Z">
+<meta property="article:modified_time" content="2024-03-03T07:50:38.253Z">
 <meta property="article:author" content="Hitokui">
-<meta property="article:tag" content="Blog, Java">
+<meta property="article:tag" content="MYSQL">
+<meta property="article:tag" content="Oracle">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Hitokui&#39;s Blog" type="application/atom+xml">
@@ -168,512 +173,359 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-16.0817" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      数据库 4
+    </h1>
+  
+
+        
+        <a href="/2024/03/03/16.0817/" class="archive-article-date">
+  	<time datetime="2024-03-03T07:50:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-03-03</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="0807"><a href="#0807" class="headerlink" title="0807"></a>0807</h1><ul>
+<li>建表时的六种约束</li>
+<li>VIEW</li>
+<li>索引 INDEX</li>
+<li>触发器 TRIGGER</li>
+<li>存储过程 PROCEDURE<ul>
+<li>if,while,case when</li>
+</ul>
+</li>
+<li>事务 TRANSACTION<span id="more"></span></li>
+</ul>
+<h2 id="建表时的约束"><a href="#建表时的约束" class="headerlink" title="建表时的约束"></a>建表时的约束</h2><ul>
+<li>保障数据的一致性和完整性</li>
+<li>六种约束,MYSQL少一种 CHECK约束</li>
+<li>单列约束(每个约束只约束一列),多列约束(每个约束可约束多列数据)</li>
+<li>列级约束(列级约束只能作用在一个列上，跟在列的定义后面),表级约束(可以作用于多列,需要单独定义)</li>
+</ul>
+<h3 id="六种约束"><a href="#六种约束" class="headerlink" title="六种约束"></a>六种约束</h3><ol>
+<li>NOT NULL 非空约束</li>
+<li>UNIQUE 唯一约束<ul>
+<li>空值还是可以加进去,因此 unique + notnull &#x3D; PrimaryKey</li>
+<li>“”和0不属于NULL,因此可用 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用表记约束语法给多列添加唯一约束</span></span><br><span class="line"><span class="keyword">CONSTRAINT</span>  uk_name_pwd  <span class="keyword">UNIQUE</span>(NAME,PASSWORD)</span><br><span class="line"><span class="comment">-- 删除约束</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> users <span class="keyword">DROP</span> INDEX uk_name_pwd;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>PRIMARY KEY<ul>
+<li>一个表只能有一个主键,想用ID+NAME做主键时使用联合主键</li>
+<li>联合主键只能用表记约束 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 联合主键</span></span><br><span class="line"><span class="keyword">CONSTRAINT</span>  emp7_pk  <span class="keyword">PRIMARY</span>  KEY(NAME,pwd)</span><br><span class="line"><span class="comment">-- 删除</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> users <span class="keyword">DROP</span> <span class="keyword">PRIMARY</span> KEY;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>FOREIGN KEY<ul>
+<li>实现参照完整性,要求这一列的值需要参照另外一个表的数据</li>
+<li>只能参照主键或唯一约束的列</li>
+<li>一个表可以有多个外键约束 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建外键</span></span><br><span class="line"><span class="keyword">CONSTRAINT</span>  emp_dept_id_fk <span class="keyword">FOREIGN</span> KEY(classes_name,classes_number) <span class="keyword">REFERENCES</span> classes(NAME,number) <span class="keyword">ON</span> XXX</span><br><span class="line"><span class="comment">-- 删除</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> users <span class="keyword">DROP</span> <span class="keyword">FOREIGN</span> KEY emp_dept_id_fk;</span><br></pre></td></tr></table></figure></li>
+<li>ON 后面的约束关键字,因为子表在使用父表的数据,因此不能直接删除父表的数据<ol>
+<li>ON DELETE CASCADE 父表删除,子表使用该值得行也删除</li>
+<li>ON DELETE SET NULL 父表删除,子表改行设为NULL</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>CHECK</li>
+</ol>
+<ul>
+<li>MYSQL没这个</li>
+</ul>
+<ol start="6">
+<li><p>DEFAULT</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 增加约束</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> emp MODIFY sex <span class="type">VARCHAR</span>(<span class="number">30</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>;</span><br><span class="line"><span class="comment">-- 取消约束</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> emp MODIFY sex</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>其他一些关键字</p>
+<ol>
+<li><code>auto_increment</code>,然后写0写空都会从最大的开始,第一个数没有的话会从1开始<ul>
+<li>之前有20,21,删了20,那只能通过 values(21,’abc’)来把这条数据加回来</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>对于VARCHAR之类的主键,可以使用UUID</p>
+<ul>
+<li>全称：Universally Unique Identifier，即通用唯一识别码。</li>
+<li>在触发器的那里讲这个</li>
+</ul>
+</li>
+</ol>
+<h2 id="VIEW"><a href="#VIEW" class="headerlink" title="VIEW"></a>VIEW</h2><ul>
+<li>只保存sql逻辑,<code>不保存查询结果</code></li>
+<li><code>在运行时</code>才会取得数据</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">VIEW</span> v_1</span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="keyword">SELECT</span> ename, dname, job</span><br><span class="line">	<span class="keyword">FROM</span> emp</span><br><span class="line">	<span class="keyword">LEFT</span> <span class="keyword">JOIN</span> dept</span><br><span class="line">	<span class="keyword">ON</span> emp.deptno <span class="operator">=</span> dept.deptno</span><br><span class="line">	<span class="keyword">WHERE</span> ename <span class="keyword">LIKE</span> <span class="string">&#x27;%a%&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h2><ul>
+<li>一般用的最多的就是主键索引和唯一索引</li>
+<li>用来优化SQL语句,索引的优化效果时是最好的</li>
+<li>子查询好像是不走索引的,子查询和多表可以相互替换</li>
+<li>MYSQL 用的多的是B树索引</li>
+<li>ORACLE还有其他索引</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> ename <span class="operator">=</span> <span class="string">&#x27;SMITH&#x27;</span>; <span class="comment">-- 查满14次，效率主要看查询的次数</span></span><br><span class="line"><span class="keyword">CREATE</span> [<span class="keyword">UNIQUE</span><span class="operator">|</span>FULLTEXT<span class="operator">|</span>SPATIAL] INDEX i_emp_ename <span class="keyword">ON</span> emp(ename); <span class="comment">-- 不写的话时普通索引</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除索引</span></span><br><span class="line"><span class="keyword">DROP</span>  INDEX index_name <span class="keyword">ON</span> table_name;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看索引</span></span><br><span class="line"><span class="keyword">SHOW</span> INDEX <span class="keyword">FROM</span> table_name;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="建立索引得标注"><a href="#建立索引得标注" class="headerlink" title="建立索引得标注"></a>建立索引得标注</h4><ul>
+<li>频繁搜索的列</li>
+<li>经常用于查询选择得列</li>
+<li>经常排序分组得列</li>
+<li>主键、外键</li>
+</ul>
+<h4 id="查一下sql优化方法"><a href="#查一下sql优化方法" class="headerlink" title="查一下sql优化方法"></a>查一下sql优化方法</h4><ul>
+<li>查询时减少使用*返回全部列，不要返回不需要的列</li>
+<li>索引应该尽量小，在字节数小的列上建立索引</li>
+<li>WHERE子句中有多个条件表达式时，包含索引列的表达式应置于其他条件表达式之前</li>
+<li>避免在ORDER BY子句中使用表达式</li>
+</ul>
+<h2 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a>触发器</h2><ul>
+<li>比如:插入一条数据后,往日志表里插入数据</li>
+</ul>
+<h4 id="触发器类型"><a href="#触发器类型" class="headerlink" title="触发器类型"></a>触发器类型</h4><ol>
+<li>INSERT 型触发器</li>
+<li>UPDATE 型触发器</li>
+<li>DELETE 型触发器</li>
+</ol>
+<h4 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h4><ul>
+<li>OLD</li>
+<li>NEW<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 1.在插入数据后写日志</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> log_add BEFORE <span class="keyword">INSERT</span> <span class="keyword">ON</span> log <span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">	<span class="keyword">SET</span> new.id <span class="operator">=</span> UUID(); <span class="comment">-- new代表新的一行</span></span><br><span class="line"><span class="keyword">END</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 2. 在更新数据后写日志</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> emp_update AFTER <span class="keyword">UPDATE</span> <span class="keyword">ON</span> emp <span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="built_in">log</span>(content) <span class="keyword">VALUES</span> (CONCAT(old.ename,<span class="string">&#x27; 修改用户 &#x27;</span>,new.ename));</span><br><span class="line"><span class="keyword">END</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="数据库设计"><a href="#数据库设计" class="headerlink" title="数据库设计"></a>数据库设计</h2><ul>
+<li>六大范式,主要用前三个范式</li>
+</ul>
+<ol>
+<li>每个字段必须是不可再分割的独立单元<ul>
+<li>即姓名,ID不能写在一个字段里面,应该写在两个字段里面</li>
+</ul>
+</li>
+<li>在1的基础上,一张表应该只表达一个东西,每个字段都应该对表的主键有依赖性<ul>
+<li>员工表里只应该有员工相关的信息,不应该发生传递依赖</li>
+</ul>
+</li>
+<li>在2的基础上,字段只能和主键有直接决定依赖关系<ul>
+<li>员工表里可以有部门编号,但不应该有部门名称</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="MYSQL存储过程-函数-PROCEDURE"><a href="#MYSQL存储过程-函数-PROCEDURE" class="headerlink" title="MYSQL存储过程 -&gt; 函数 PROCEDURE"></a>MYSQL存储过程 -&gt; 函数 PROCEDURE</h2><ul>
+<li>有参,无参</li>
+<li>创建,调用</li>
+<li>一组为了完成特定功能的sql语句集</li>
+<li>可能一次要处理好几十张表,用java写的话处理慢，直接在数据库执行的,存储速度非常快</li>
+<li>移植性很差,MYSQL写的在ORACLE就不能用</li>
+</ul>
+<h4 id="关键字-1"><a href="#关键字-1" class="headerlink" title="关键字"></a>关键字</h4><ol>
+<li>参数类型<ul>
+<li>INOUT 既可以输入又可以输入，适合输入输出为同种数据类型的</li>
+<li>IN 仅输入</li>
+<li>OUT 仅输出</li>
+<li>INTO，使用SELECT后，再使用INTO为OUT类型的参数赋值</li>
+</ul>
+</li>
+<li>只能返回一行，多行会报错</li>
+<li>调用<ul>
+<li><code>SET @num = 7839;</code> 注意变量的初始化方法</li>
+<li><code>CALL p_5(@num,@name,@date);</code></li>
+<li><code>SELECT @name,@num,@date;</code><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 练习:根据员工编号INOUT,查询员工姓名,薪水,入职时间</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> p_5(<span class="keyword">INOUT</span> num <span class="type">INT</span>, <span class="keyword">OUT</span> name <span class="type">VARCHAR</span>(<span class="number">10</span>), <span class="keyword">OUT</span> <span class="type">date</span> DATETIME)</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">	<span class="keyword">SELECT</span> ename,hiredate,sal <span class="keyword">INTO</span> name,<span class="type">date</span>,num <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> empno <span class="operator">=</span> num; <span class="comment">-- 用INTO给多个用户赋值</span></span><br><span class="line"><span class="keyword">END</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span> <span class="variable">@num</span> <span class="operator">=</span> <span class="number">7839</span>;</span><br><span class="line"><span class="keyword">SET</span> <span class="variable">@name</span> <span class="operator">=</span> <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"><span class="keyword">SET</span> <span class="variable">@date</span> <span class="operator">=</span> NOW();</span><br><span class="line"><span class="keyword">CALL</span> p_5(<span class="variable">@num</span>,<span class="variable">@name</span>,<span class="variable">@date</span>); <span class="comment">-- 不能写别名</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="variable">@name</span>,<span class="variable">@num</span>,<span class="variable">@date</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>在PROCEDURE中使用IF,WHILE<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 1. IF的例子</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> p_if(<span class="keyword">in</span> num <span class="type">int</span>, <span class="keyword">out</span> res <span class="type">VARCHAR</span>(<span class="number">20</span>))</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">	IF num <span class="operator">=</span> <span class="number">1</span> <span class="keyword">THEN</span></span><br><span class="line">		<span class="keyword">SET</span> res <span class="operator">=</span> <span class="string">&#x27;星期一&#x27;</span>;</span><br><span class="line">	ELSEIF num <span class="operator">=</span> <span class="number">2</span> <span class="keyword">THEN</span></span><br><span class="line">		<span class="keyword">SET</span> res <span class="operator">=</span> <span class="string">&#x27;星期二&#x27;</span>;</span><br><span class="line">	<span class="keyword">ELSE</span> </span><br><span class="line">		<span class="keyword">SET</span> res <span class="operator">=</span> <span class="string">&#x27;输入错误&#x27;</span>;</span><br><span class="line">	<span class="keyword">END</span> IF;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span> <span class="variable">@res</span> <span class="operator">=</span> <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"><span class="keyword">CALL</span> p_if(<span class="number">2</span>,<span class="variable">@res</span>);</span><br><span class="line"><span class="keyword">SELECT</span> <span class="variable">@res</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 2.WHILE的例子</span></span><br><span class="line"><span class="comment">-- 求1~100的累加和</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> p_while(<span class="keyword">in</span> num <span class="type">int</span>, <span class="keyword">out</span> sum <span class="type">int</span>)</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">	<span class="keyword">DECLARE</span> i <span class="type">INT</span> <span class="keyword">DEFAULT</span> <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">DECLARE</span> vsum <span class="type">INT</span> <span class="keyword">DEFAULT</span> <span class="number">0</span>;</span><br><span class="line">	</span><br><span class="line">	WHILE i<span class="operator">&lt;=</span>num DO</span><br><span class="line">		<span class="keyword">SET</span> vsum <span class="operator">=</span> vsum <span class="operator">+</span> i;</span><br><span class="line">		<span class="keyword">SET</span> i <span class="operator">=</span> i <span class="operator">+</span> <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">END</span> WHILE;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">SET</span> sum <span class="operator">=</span> vsum;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span> <span class="variable">@sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">CALL</span> p_while(<span class="number">100</span>,<span class="variable">@sum</span>);</span><br><span class="line"><span class="keyword">SELECT</span> <span class="variable">@sum</span>;</span><br></pre></td></tr></table></figure></li>
+<li>CASE WHEN有两种</li>
+</ol>
+<ul>
+<li>简单CASEWHEN和搜索CASEWHEN<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 简单CASE WHEN</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> p_casewhen(<span class="keyword">in</span> eno <span class="type">int</span>, <span class="keyword">out</span> str <span class="type">varchar</span>(<span class="number">10</span>))</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">	<span class="keyword">SELECT</span></span><br><span class="line">		<span class="keyword">CASE</span> deptno</span><br><span class="line">			<span class="keyword">WHEN</span> <span class="number">10</span> <span class="keyword">THEN</span> <span class="string">&#x27;会计部&#x27;</span></span><br><span class="line">			<span class="keyword">WHEN</span> <span class="number">20</span> <span class="keyword">THEN</span> <span class="string">&#x27;调研部&#x27;</span></span><br><span class="line">			<span class="keyword">ELSE</span> <span class="string">&#x27;其他&#x27;</span></span><br><span class="line">		<span class="keyword">END</span></span><br><span class="line">	<span class="keyword">INTO</span> str <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> empno <span class="operator">=</span> eno;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 搜索CASE WHEN，表达式的方法</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> p_casewhen2(<span class="keyword">in</span> eno <span class="type">int</span>, <span class="keyword">out</span> str <span class="type">varchar</span>(<span class="number">10</span>))</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">	<span class="keyword">SELECT</span></span><br><span class="line">		<span class="keyword">CASE</span> </span><br><span class="line">			<span class="keyword">WHEN</span> deptno <span class="operator">=</span> <span class="number">10</span> <span class="keyword">THEN</span> <span class="string">&#x27;会计部&#x27;</span></span><br><span class="line">			<span class="keyword">WHEN</span> deptno <span class="operator">=</span> <span class="number">20</span> <span class="keyword">THEN</span> <span class="string">&#x27;调研部&#x27;</span></span><br><span class="line">			<span class="keyword">ELSE</span> <span class="string">&#x27;其他&#x27;</span></span><br><span class="line">		<span class="keyword">END</span></span><br><span class="line">	<span class="keyword">INTO</span> str <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> empno <span class="operator">=</span> eno;</span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><ul>
+<li>MYSQL的函数不好用，主要使用PROCUDRE<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 有的时候需要先启动下面这个设置</span></span><br><span class="line"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> log_bin_trust_function_creators <span class="operator">=</span> <span class="literal">TRUE</span>; </span><br><span class="line"><span class="comment">-- 举例：</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> f_while(num <span class="type">INT</span>) <span class="keyword">RETURNS</span> <span class="type">INT</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">	<span class="keyword">DECLARE</span> i <span class="type">INT</span> <span class="keyword">DEFAULT</span> <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">DECLARE</span> vsum <span class="type">INT</span> <span class="keyword">DEFAULT</span> <span class="number">0</span>;</span><br><span class="line">	WHILE i <span class="operator">&lt;=</span> num DO</span><br><span class="line">		<span class="keyword">SET</span> vsum <span class="operator">=</span> vsum <span class="operator">+</span> i;</span><br><span class="line">		<span class="keyword">SET</span> i <span class="operator">=</span> i <span class="operator">+</span> <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">END</span> WHILE;</span><br><span class="line">	<span class="keyword">RETURN</span> vsum;</span><br><span class="line"><span class="keyword">END</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span> <span class="variable">@res</span> <span class="operator">=</span> <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"><span class="keyword">SELECT</span> f_while(<span class="number">100</span>); <span class="comment">-- 要用SELECT去调用</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="variable">@res</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="全局变量"><a href="#全局变量" class="headerlink" title="全局变量"></a>全局变量</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查看全局变量 @@ ,会一直存在</span></span><br><span class="line"><span class="keyword">SHOW</span> VARIABLES <span class="keyword">LIKE</span> <span class="string">&#x27;%char%&#x27;</span>;</span><br><span class="line"><span class="keyword">SELECT</span> @<span class="variable">@character_set_client</span>; <span class="comment">-- 不能新建,但是可以修改</span></span><br><span class="line"><span class="keyword">SET</span> @<span class="variable">@character_set_client</span> <span class="operator">=</span><span class="operator">=</span> <span class="string">&#x27;utf8mb4&#x27;</span>; </span><br></pre></td></tr></table></figure>
+<h2 id="MYSQL-事务-TRANSACTION"><a href="#MYSQL-事务-TRANSACTION" class="headerlink" title="MYSQL 事务 TRANSACTION"></a>MYSQL 事务 TRANSACTION</h2><ul>
+<li>一个数据库操作序列，这些操作要么全做，要么全不做，是一个不可分割的工作单位</li>
+<li>mysql默认提交方式是自动提交<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> @<span class="variable">@autocommit</span>; <span class="comment">-- 1 表示会自动提交</span></span><br><span class="line"><span class="keyword">SET</span> @<span class="variable">@autocommit</span> <span class="operator">=</span> <span class="number">0</span>; <span class="comment">-- 改成手动提交,不会影响其他会话,-- 效果也类似于开启一个事务</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> @<span class="variable">@GLOBAL</span>.autocommit; <span class="comment">-- 1</span></span><br><span class="line"><span class="keyword">SET</span> @<span class="variable">@GLOBAL</span>.autocommit <span class="operator">=</span> <span class="number">0</span>;  <span class="comment">-- 会影响所有会话</span></span><br></pre></td></tr></table></figure></li>
+<li>事务则需要手动提交,然后等待commit或者rollback</li>
+<li>如果单元中某条SQL语句一<br>  旦执行失败或产生错误，整个单元将会回滚。所有受到影<br>  响的数据将返回到事务开始以前的状态；如果单元中的所<br>  有SQL语句均执行成功，则事务被顺利执行。<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">START</span> TRANSACTION <span class="comment">-- 开启事务,在提交或者回滚之前不会影响到真正的数据</span></span><br><span class="line">	<span class="keyword">update</span> account <span class="keyword">set</span> balance <span class="operator">=</span> balance <span class="operator">+</span> <span class="number">100</span> <span class="keyword">where</span> name <span class="operator">=</span> <span class="string">&#x27;aa&#x27;</span>;</span><br><span class="line">	<span class="keyword">update</span> account <span class="keyword">set</span> balance <span class="operator">=</span> balance <span class="operator">-</span> <span class="number">100</span> <span class="keyword">where</span> name <span class="operator">=</span> <span class="string">&#x27;bb&#x27;</span>;		</span><br><span class="line"><span class="keyword">COMMIT</span>; <span class="comment">-- 或者ROLLBACK</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="事务的使用"><a href="#事务的使用" class="headerlink" title="事务的使用"></a>事务的使用</h4><ul>
+<li>以第一个 DML 语句的执行作为开始（在@@autocommit &#x3D; 0 设置之后）</li>
+<li>以下面之一为结束<ol>
+<li>COMMIT 或 ROLLBACK 语句</li>
+<li>DDL 或 DCL 语句（自动提交）</li>
+<li>用户会话正常结束</li>
+<li>系统异常终了</li>
+</ol>
+</li>
+</ul>
+<h4 id="事务的特点"><a href="#事务的特点" class="headerlink" title="事务的特点"></a>事务的特点</h4><p>– 原子性<br>– 每一个SQL语句都是不可分割的,要么全部执行,要么全部不执行<br>– 一致性<br>– ??? 状态要保持一致<br>– 隔离性<br>– 一个事务的执行不能被另一个干扰<br>– 持久性<br>– 一旦提交,就会永久改变数据</p>
+<h2 id="事务的隔离级别"><a href="#事务的隔离级别" class="headerlink" title="事务的隔离级别"></a>事务的隔离级别</h2><ul>
+<li>对于同时运行的多个事务, 当这些事务访问数据库中相同的数据时,如果没有采取必要的隔离机制,就会导致各种并发问题</li>
+</ul>
+<h4 id="四个事务隔离级别"><a href="#四个事务隔离级别" class="headerlink" title="四个事务隔离级别"></a>四个事务隔离级别</h4><ul>
+<li>一个事务与其他事务隔离的程度称为隔离级别.</li>
+<li>ORACLE： 支持两种READ COMMITED,SERIALIZABLE。</li>
+<li>Mysql： 支持四种，默认是REPEATABLE READ<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查看当前隔离级别</span></span><br><span class="line"><span class="keyword">SELECT</span> @<span class="variable">@transaction_isolation</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="脏读，不可重复读，幻读"><a href="#脏读，不可重复读，幻读" class="headerlink" title="脏读，不可重复读，幻读"></a>脏读，不可重复读，幻读</h4>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2023" class="archive-year">2023</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/10.IO%E6%B5%812/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:41:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/10.IO%E6%B5%812/">转换流对象流标准流</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MYSQL</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Oracle</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        			<a href="/categories/数据库//" class="article-tag-list-link color4">数据库</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2024/03/03/16.0817/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/9.IO%E6%B5%811/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:40:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2024/03/03/17.0818/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          数据库 5
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/03/03/15.0816/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">数据库 3</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/9.IO%E6%B5%811/">文件，IO流</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0807"><span class="toc-number">1.</span> <span class="toc-text">0807</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E8%A1%A8%E6%97%B6%E7%9A%84%E7%BA%A6%E6%9D%9F"><span class="toc-number">1.1.</span> <span class="toc-text">建表时的约束</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD%E7%A7%8D%E7%BA%A6%E6%9D%9F"><span class="toc-number">1.1.1.</span> <span class="toc-text">六种约束</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#VIEW"><span class="toc-number">1.2.</span> <span class="toc-text">VIEW</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95"><span class="toc-number">1.3.</span> <span class="toc-text">索引</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E7%B4%A2%E5%BC%95%E5%BE%97%E6%A0%87%E6%B3%A8"><span class="toc-number">1.3.0.1.</span> <span class="toc-text">建立索引得标注</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E4%B8%80%E4%B8%8Bsql%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95"><span class="toc-number">1.3.0.2.</span> <span class="toc-text">查一下sql优化方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">1.4.</span> <span class="toc-text">触发器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A6%E5%8F%91%E5%99%A8%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.4.0.1.</span> <span class="toc-text">触发器类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">1.4.0.2.</span> <span class="toc-text">关键字</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.5.</span> <span class="toc-text">数据库设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MYSQL%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B-%E5%87%BD%E6%95%B0-PROCEDURE"><span class="toc-number">1.6.</span> <span class="toc-text">MYSQL存储过程 -&gt; 函数 PROCEDURE</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E5%AD%97-1"><span class="toc-number">1.6.0.1.</span> <span class="toc-text">关键字</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0"><span class="toc-number">1.7.</span> <span class="toc-text">函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="toc-number">1.8.</span> <span class="toc-text">全局变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MYSQL-%E4%BA%8B%E5%8A%A1-TRANSACTION"><span class="toc-number">1.9.</span> <span class="toc-text">MYSQL 事务 TRANSACTION</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">1.9.0.1.</span> <span class="toc-text">事务的使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-number">1.9.0.2.</span> <span class="toc-text">事务的特点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="toc-number">1.10.</span> <span class="toc-text">事务的隔离级别</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9B%E4%B8%AA%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="toc-number">1.10.0.1.</span> <span class="toc-text">四个事务隔离级别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%84%8F%E8%AF%BB%EF%BC%8C%E4%B8%8D%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%EF%BC%8C%E5%B9%BB%E8%AF%BB"><span class="toc-number">1.10.0.2.</span> <span class="toc-text">脏读，不可重复读，幻读</span></a></li></ol></li></ol></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/6.%E8%8C%83%E5%9E%8B%E6%9E%9A%E4%B8%BE%E6%B3%A8%E8%A7%A3/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:34:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/6.%E8%8C%83%E5%9E%8B%E6%9E%9A%E4%B8%BE%E6%B3%A8%E8%A7%A3/">范型，枚举，注解</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/4.%E5%B8%B8%E7%94%A8%E7%B1%BB/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:33:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/4.%E5%B8%B8%E7%94%A8%E7%B1%BB/">常用类：String，Date，Comparable</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/7.%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:29:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/7.%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/8.%E5%90%8C%E6%AD%A5%E4%B8%8E%E7%BA%BF%E7%A8%8B%E9%80%9A%E8%AE%AF/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:29:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/8.%E5%90%8C%E6%AD%A5%E4%B8%8E%E7%BA%BF%E7%A8%8B%E9%80%9A%E8%AE%AF/">同步与线程通讯</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/3.mac%E5%BF%AB%E6%8D%B7%E9%94%AE/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:27:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/3.mac%E5%BF%AB%E6%8D%B7%E9%94%AE/">Mac常用快捷键</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Mac</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Readme//" class="article-tag-list-link color2">Readme</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/5.Java%E5%B8%B8%E7%94%A8%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:25:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/5.Java%E5%B8%B8%E7%94%A8%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/">Java常用类型转换</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/03/2.%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="archive-article-date">
-  	<time datetime="2023-08-03T12:12:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/03/2.%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">博客搭建</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Readme//" class="article-tag-list-link color2">Readme</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/03/1.hello-world/" class="archive-article-date">
-  	<time datetime="2023-08-03T11:24:06.693Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/03/1.hello-world/">Hello World</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Readme//" class="article-tag-list-link color2">Readme</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -696,8 +548,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

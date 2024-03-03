@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives: 2023/8 | Hitokui&#39;s Blog</title>
+  <title>数据库 3 | Hitokui&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hitokui&#39;s Blog">
-<meta property="og:url" content="http://example.com/archives/2023/08/index.html">
+  <meta name="description" content="0816 MYSQl与Oracle的分页查询 MYSQL: LIMIT Oracle: 伪列+三层SELECT SQL的执行顺序     全联接UNION 使用窗口函数替代相关子查询">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库 3">
+<meta property="og:url" content="http://example.com/2024/03/03/15.0816/index.html">
 <meta property="og:site_name" content="Hitokui&#39;s Blog">
+<meta property="og:description" content="0816 MYSQl与Oracle的分页查询 MYSQL: LIMIT Oracle: 伪列+三层SELECT SQL的执行顺序     全联接UNION 使用窗口函数替代相关子查询">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-03-03T07:49:30.000Z">
+<meta property="article:modified_time" content="2024-03-03T07:50:00.955Z">
 <meta property="article:author" content="Hitokui">
-<meta property="article:tag" content="Blog, Java">
+<meta property="article:tag" content="MYSQL">
+<meta property="article:tag" content="Oracle">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Hitokui&#39;s Blog" type="application/atom+xml">
@@ -168,512 +173,247 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-15.0816" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      数据库 3
+    </h1>
+  
+
+        
+        <a href="/2024/03/03/15.0816/" class="archive-article-date">
+  	<time datetime="2024-03-03T07:49:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-03-03</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="0816"><a href="#0816" class="headerlink" title="0816"></a>0816</h1><ul>
+<li>MYSQl与Oracle的分页查询<ul>
+<li>MYSQL: LIMIT</li>
+<li>Oracle: 伪列+三层SELECT<ul>
+<li>SQL的执行顺序</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>全联接UNION</li>
+<li>使用窗口函数替代相关子查询<span id="more"></span></li>
+</ul>
+<h3 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h3><ul>
+<li>MYSQL使用 LIMIT</li>
+<li>Oracle不支持LIMIT</li>
+<li>公式:<code>起始条数 = (当前页 - 1) * 每页显示数</code><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查询入职日期最早的前5名员工</span></span><br><span class="line"><span class="keyword">SELECT</span> ename, job, sal, hiredate</span><br><span class="line">    <span class="keyword">FROM</span> emp</span><br><span class="line">    <span class="keyword">ORDER</span> <span class="keyword">BY</span> hiredate</span><br><span class="line">    LIMIT <span class="number">0</span>,<span class="number">5</span>;  <span class="comment">-- 第一页0,5;第二页5,5</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="伪列与ORACLE分页"><a href="#伪列与ORACLE分页" class="headerlink" title="伪列与ORACLE分页"></a>伪列与ORACLE分页</h3><ol>
+<li><code>ROWID</code> ,由用户,表等等元素构成的该行的唯一标识符,可以用作主键,PPT里由具体内容 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- SELECT *, ROWID FROM emp;报错</span></span><br><span class="line"><span class="keyword">SELECT</span> emp.<span class="operator">*</span>, ROWID <span class="keyword">FROM</span> emp;  <span class="comment">--正确写法</span></span><br></pre></td></tr></table></figure></li>
+<li><code>ROWNUM</code> ,给现有的结果集分配1,2,3,4的编号,ORACLE用这个和子查询进行分页 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 2.ROWNUM(PPT在子查询里),现有结果集,然后自动分配一个列号1234</span></span><br><span class="line"><span class="keyword">SELECT</span> emp.<span class="operator">*</span>, ROWNUM <span class="keyword">FROM</span> emp;</span><br></pre></td></tr></table></figure></li>
+<li>ROWNUM与ORDER BY</li>
+</ol>
+<ul>
+<li>SQL执行顺序: FROM -&gt; WHERE -&gt;SELECT -&gt;ORDER　BY</li>
+<li>因此如果需要排序+分页的话,需要三层结构来实现先<code>ORDER BY</code>再设置<code>ROWNUM</code>的效果</li>
+<li>这也是标准ORACLE的写法  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span>     <span class="comment">-- 3. 最外层是分页专用的WHERE</span></span><br><span class="line">(<span class="keyword">SELECT</span> a.<span class="operator">*</span>, ROWNUM r <span class="keyword">FROM</span>  <span class="comment">-- 2. 第二层取ROWNUM</span></span><br><span class="line">    (<span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> dept <span class="operator">=</span> <span class="number">20</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> empno <span class="keyword">desc</span>)a)   <span class="comment">-- 1. 在最里面排序,WHERE条件也写最里面</span></span><br><span class="line"><span class="keyword">WHERE</span> r<span class="operator">&lt;=</span><span class="number">10</span> <span class="keyword">AND</span> r<span class="operator">&gt;</span><span class="number">5</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="UNION与全连接"><a href="#UNION与全连接" class="headerlink" title="UNION与全连接"></a>UNION与全连接</h3><ul>
+<li>MYSQL用UNION解决没有<code>FULL JOIN</code>的问题</li>
+<li>把两个表做并集运算,要求两个表的列数,列的类型需要保持一致</li>
+<li>自动去重,不想去重的话可以使用<code>UNION ALL</code></li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 分别使用联合运算及完全联合运算完成，按照时间升序顺序，查询员工7839的工作岗位列表。</span></span><br><span class="line"><span class="keyword">SELECT</span> sal,job,hiredate <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> empno <span class="operator">=</span> <span class="number">7839</span></span><br><span class="line"><span class="keyword">UNION</span></span><br><span class="line"><span class="keyword">SELECT</span> sal,job,begindate <span class="keyword">FROM</span> emp_jobhistory <span class="keyword">WHERE</span> empno <span class="operator">=</span> <span class="number">7839</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> hiredate;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> sal, job</span><br><span class="line">    <span class="keyword">FROM</span> emp a</span><br><span class="line">    <span class="keyword">FULL</span> <span class="keyword">JOIN</span> (<span class="keyword">SELECT</span> sal,job <span class="keyword">FROM</span> emp_jobhistory <span class="keyword">WHERE</span> empno <span class="operator">=</span><span class="number">7839</span>) b</span><br><span class="line">    <span class="keyword">ON</span>  a.empno<span class="operator">=</span> b.empno ;</span><br></pre></td></tr></table></figure>
+
+<h3 id="相关子查询"><a href="#相关子查询" class="headerlink" title="相关子查询"></a>相关子查询</h3><h4 id="1-相关子查询"><a href="#1-相关子查询" class="headerlink" title="1. 相关子查询"></a>1. 相关子查询</h4><ul>
+<li><p>在WHERE或SELECT子句中使用相关子查询</p>
+</li>
+<li><p>概念: 当子查询中引用了父查询表中的一个列时，MySQL服务器执行相关子查询</p>
+</li>
+<li><p>这意味着子查询本身不能直接执行</p>
+</li>
+<li><p>原理: 父查询的行每被执行一次,子查询就执行一次</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 1. 查询比所在职位平均工资高的员工姓名，职位。(sal和AVG(sal)相比较)</span></span><br><span class="line"><span class="comment">-- 1.1 多表关联</span></span><br><span class="line"><span class="keyword">SELECT</span> ename,sal</span><br><span class="line"><span class="keyword">FROM</span> emp o</span><br><span class="line"><span class="keyword">JOIN</span> (<span class="keyword">SELECT</span> job, <span class="built_in">AVG</span>(sal) 平均工资 <span class="keyword">FROM</span> emp <span class="keyword">GROUP</span> <span class="keyword">BY</span> job) i</span><br><span class="line"><span class="keyword">ON</span> o.job <span class="operator">=</span> i.job</span><br><span class="line"><span class="keyword">WHERE</span> o.sal <span class="operator">&gt;</span> i.平均工资;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 1.2 相关子查询</span></span><br><span class="line"><span class="keyword">SELECT</span> ename,sal</span><br><span class="line"><span class="keyword">FROM</span> emp o</span><br><span class="line"><span class="keyword">WHERE</span> sal <span class="operator">&gt;</span> (<span class="keyword">SELECT</span> <span class="built_in">AVG</span>(sal) <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> deptno <span class="operator">=</span> o.deptno); <span class="comment">-- 在子查询中引用父查询的列</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>相关子查询会影响性能,因此能不用最好不用</p>
+</li>
+<li><p>但也有不得不用的场景</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 1.查询每个部门工资最低的员工</span></span><br><span class="line"><span class="keyword">select</span> e.ename 员工姓名, e.sal 工资 </span><br><span class="line"><span class="keyword">from</span> emp e </span><br><span class="line"><span class="keyword">where</span> sal <span class="operator">=</span> (<span class="keyword">select</span> <span class="built_in">max</span>(sal) <span class="keyword">from</span> emp <span class="keyword">where</span> deptno <span class="operator">=</span> e.deptno); </span><br><span class="line"></span><br><span class="line"><span class="comment">-- 2. 查询各个部门工资最低的[两]个人</span></span><br><span class="line"><span class="comment">-- 一开始的时候想用limit,但比起第一个例子,多了&quot;各个部门&quot;这个分组条件,又需要排序,还要保留各组前两个</span></span><br><span class="line"><span class="comment">-- 2.1 相关子查询</span></span><br><span class="line"><span class="keyword">SELECT</span> empno, ename, sal</span><br><span class="line">	<span class="keyword">FROM</span> emp o</span><br><span class="line">	<span class="keyword">WHERE</span> <span class="number">1</span> <span class="operator">&gt;=</span> (<span class="keyword">SELECT</span> <span class="built_in">count</span>(<span class="number">1</span>) <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> deptno <span class="operator">=</span> o.deptno <span class="keyword">and</span> sal <span class="operator">&lt;</span> o.sal); <span class="comment">-- 表示工资比他低的人只有1人</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 看不太懂上面的逻辑,干脆用下面的方法吧    </span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="2-窗口函数"><a href="#2-窗口函数" class="headerlink" title="2. 窗口函数"></a>2. 窗口函数</h4><ul>
+<li>窗口函数 能分组地给标上序号,</li>
+<li>ROW_NUMBER()over(PARTITION by 用于分组的列名 ORDER BY 用于排序的列名)</li>
+<li>同时具有分组（partition by）和排序（order by）的功能</li>
+<li>比起GROUP BY,这个方法不会减少总行数</li>
+<li>partition by分组后的结果称为“窗口”</li>
+<li>一共三种</li>
+<li>ROW_NUMBER() 1,2,3,4</li>
+<li>RANK() 1,1,1,4</li>
+<li>dense_rank() 1,1,1,2<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 会报错</span></span><br><span class="line"><span class="keyword">SELECT</span> empno, ename, sal, <span class="built_in">RANK</span>() <span class="keyword">over</span>(<span class="keyword">PARTITION</span> <span class="keyword">by</span> deptno <span class="keyword">ORDER</span> <span class="keyword">BY</span> sal) <span class="keyword">as</span> 排名</span><br><span class="line"><span class="keyword">FROM</span> emp</span><br><span class="line"><span class="keyword">WHERE</span> 排名 <span class="operator">&lt;</span> <span class="number">2</span>; <span class="comment">-- 由于先FROM,再WHERE,再SELECT,因此这里会报错</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span>  empno, ename,deptno, sal, 排名</span><br><span class="line"><span class="keyword">FROM</span> (<span class="keyword">SELECT</span> empno, ename,deptno, sal, <span class="built_in">RANK</span>()<span class="keyword">over</span>(<span class="keyword">PARTITION</span> <span class="keyword">by</span> deptno <span class="keyword">ORDER</span> <span class="keyword">BY</span> sal) <span class="keyword">as</span> 排名 <span class="keyword">FROM</span> emp) i</span><br><span class="line"><span class="keyword">WHERE</span> i.排名 <span class="operator">&lt;=</span> <span class="number">2</span>; <span class="comment">--得吧窗口函数的表套在里面,再在外面WHERE</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="3-相关子查询还可使用EXISTS和-NOT-EXISTS操作符来进行操作"><a href="#3-相关子查询还可使用EXISTS和-NOT-EXISTS操作符来进行操作" class="headerlink" title="3.相关子查询还可使用EXISTS和 NOT EXISTS操作符来进行操作"></a>3.相关子查询还可使用EXISTS和 NOT EXISTS操作符来进行操作</h4><ul>
+<li>子查询中如果有记录找到，子查询语句不会继续执行，返回值为TRUE；</li>
+<li>子查询中如果到表的末尾也没有记录找到，返回值为FALSE。</li>
+<li>NOT EXISTS操作符因为运算方法与NOT IN不同，只会返回TRUE或FALSE，不会返回空值，所以不需要考虑子查询去除空值的问题。<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查询哪些人是不是经理</span></span><br><span class="line"> <span class="comment">-- 方法1 多表内连</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> e2.ename </span><br><span class="line">    <span class="keyword">FROM</span> emp e1 </span><br><span class="line">    <span class="keyword">JOIN</span> emp e2 <span class="keyword">ON</span> e1.mgr <span class="operator">!=</span> e2.empno; <span class="comment">-- 用经理ID筛选原来的表</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 方法2 多行子查询 (empno等于任意一个mgrList里面得empcode)</span></span><br><span class="line">    <span class="keyword">SELECT</span> ename,sal</span><br><span class="line">        <span class="keyword">FROM</span> emp</span><br><span class="line">        <span class="keyword">WHERE</span> empno <span class="keyword">NOT</span> <span class="keyword">IN</span> (<span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> mgr <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> mgr <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span>);<span class="comment">-- 还记得 NOT IN + NULL会导致所有结果变成空吗</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 方法3 使用相关子查询和EXSISTS</span></span><br><span class="line"><span class="comment">-- 只关心子表有没有记录返回,不关心具体返回什么</span></span><br><span class="line"><span class="keyword">SELECT</span> ename, job, sal, deptno</span><br><span class="line"><span class="keyword">FROM</span> emp e</span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> (<span class="keyword">SELECT</span> <span class="string">&#x27;1&#x27;</span> <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> mgr<span class="operator">=</span>  e.empno);<span class="comment">-- NOT EXISTS不需要考虑空值问题</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2023" class="archive-year">2023</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/10.IO%E6%B5%812/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:41:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/10.IO%E6%B5%812/">转换流对象流标准流</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MYSQL</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Oracle</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        			<a href="/categories/数据库//" class="article-tag-list-link color4">数据库</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2024/03/03/15.0816/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/9.IO%E6%B5%811/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:40:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2024/03/03/16.0817/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          数据库 4
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/03/03/14.0815/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">数据库 2</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/9.IO%E6%B5%811/">文件，IO流</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0816"><span class="toc-number">1.</span> <span class="toc-text">0816</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.0.1.</span> <span class="toc-text">分页查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%AA%E5%88%97%E4%B8%8EORACLE%E5%88%86%E9%A1%B5"><span class="toc-number">1.0.2.</span> <span class="toc-text">伪列与ORACLE分页</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UNION%E4%B8%8E%E5%85%A8%E8%BF%9E%E6%8E%A5"><span class="toc-number">1.0.3.</span> <span class="toc-text">UNION与全连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.0.4.</span> <span class="toc-text">相关子查询</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%9B%B8%E5%85%B3%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.0.4.1.</span> <span class="toc-text">1. 相关子查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E7%AA%97%E5%8F%A3%E5%87%BD%E6%95%B0"><span class="toc-number">1.0.4.2.</span> <span class="toc-text">2. 窗口函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E7%9B%B8%E5%85%B3%E5%AD%90%E6%9F%A5%E8%AF%A2%E8%BF%98%E5%8F%AF%E4%BD%BF%E7%94%A8EXISTS%E5%92%8C-NOT-EXISTS%E6%93%8D%E4%BD%9C%E7%AC%A6%E6%9D%A5%E8%BF%9B%E8%A1%8C%E6%93%8D%E4%BD%9C"><span class="toc-number">1.0.4.3.</span> <span class="toc-text">3.相关子查询还可使用EXISTS和 NOT EXISTS操作符来进行操作</span></a></li></ol></li></ol></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/6.%E8%8C%83%E5%9E%8B%E6%9E%9A%E4%B8%BE%E6%B3%A8%E8%A7%A3/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:34:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/6.%E8%8C%83%E5%9E%8B%E6%9E%9A%E4%B8%BE%E6%B3%A8%E8%A7%A3/">范型，枚举，注解</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/4.%E5%B8%B8%E7%94%A8%E7%B1%BB/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:33:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/4.%E5%B8%B8%E7%94%A8%E7%B1%BB/">常用类：String，Date，Comparable</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/7.%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:29:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/7.%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/8.%E5%90%8C%E6%AD%A5%E4%B8%8E%E7%BA%BF%E7%A8%8B%E9%80%9A%E8%AE%AF/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:29:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/8.%E5%90%8C%E6%AD%A5%E4%B8%8E%E7%BA%BF%E7%A8%8B%E9%80%9A%E8%AE%AF/">同步与线程通讯</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/3.mac%E5%BF%AB%E6%8D%B7%E9%94%AE/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:27:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/3.mac%E5%BF%AB%E6%8D%B7%E9%94%AE/">Mac常用快捷键</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Mac</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Readme//" class="article-tag-list-link color2">Readme</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/19/5.Java%E5%B8%B8%E7%94%A8%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:25:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/19/5.Java%E5%B8%B8%E7%94%A8%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/">Java常用类型转换</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/03/2.%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="archive-article-date">
-  	<time datetime="2023-08-03T12:12:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/03/2.%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">博客搭建</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Readme//" class="article-tag-list-link color2">Readme</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/03/1.hello-world/" class="archive-article-date">
-  	<time datetime="2023-08-03T11:24:06.693Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/03/1.hello-world/">Hello World</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Readme//" class="article-tag-list-link color2">Readme</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -696,8 +436,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
