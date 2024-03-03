@@ -8,15 +8,15 @@
   <link rel="dns-prefetch" href="http://example.com">
   <title>常用类：String，Date，Comparable | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="0807 String,StringBuffer,StringBuilder util.Date,sql.Date,Calendar Comparable,Comparator  A.String1.常用方法1234567891011121314151617181920212223import java.nio.charset.StandardCharsets;public class T01 &amp;">
+  <meta name="description" content="0807 String,StringBuffer,StringBuilder util.Date,sql.Date,Calendar Comparable,Comparator">
 <meta property="og:type" content="article">
 <meta property="og:title" content="常用类：String，Date，Comparable">
 <meta property="og:url" content="http://example.com/2023/08/19/%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%951/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="0807 String,StringBuffer,StringBuilder util.Date,sql.Date,Calendar Comparable,Comparator  A.String1.常用方法1234567891011121314151617181920212223import java.nio.charset.StandardCharsets;public class T01 &amp;">
+<meta property="og:description" content="0807 String,StringBuffer,StringBuilder util.Date,sql.Date,Calendar Comparable,Comparator">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-08-19T11:33:30.000Z">
-<meta property="article:modified_time" content="2023-08-19T11:33:09.986Z">
+<meta property="article:published_time" content="2023-08-19T10:33:30.000Z">
+<meta property="article:modified_time" content="2023-08-19T14:17:47.073Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -167,7 +167,7 @@
 
         
         <a href="/2023/08/19/%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%951/" class="archive-article-date">
-  	<time datetime="2023-08-19T11:33:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
+  	<time datetime="2023-08-19T10:33:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
 </a>
         
       </header>
@@ -179,6 +179,8 @@
 <li>util.Date,sql.Date,Calendar</li>
 <li>Comparable,Comparator</li>
 </ul>
+<span id="more"></span>
+
 <h2 id="A-String"><a href="#A-String" class="headerlink" title="A.String"></a>A.String</h2><h3 id="1-常用方法"><a href="#1-常用方法" class="headerlink" title="1.常用方法"></a>1.常用方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.nio.charset.StandardCharsets;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">T01</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;dasdaDASdsa&quot;</span>;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">            1.String与char[],byte[],String[]互转</span></span><br><span class="line"><span class="comment">            多用于遍历和排序</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="type">char</span>[] c = s.toCharArray();</span><br><span class="line">        <span class="type">String</span> <span class="variable">s2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(c, <span class="number">0</span>, c.length);</span><br><span class="line">        <span class="type">byte</span>[] b = s.getBytes(StandardCharsets.UTF_8);</span><br><span class="line">        <span class="type">String</span> <span class="variable">s3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(b, <span class="number">0</span>, b.length);</span><br><span class="line">        String[] s6 = s.split(<span class="string">&quot;&quot;</span>);</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">            2.其他</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">s4</span> <span class="operator">=</span> s.trim();<span class="comment">//去除空格</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">s5</span> <span class="operator">=</span> s.substring(<span class="number">2</span>, <span class="number">3</span>);<span class="comment">//左闭右开</span></span><br><span class="line">        s.contains(<span class="string">&quot;Sd&quot;</span>);</span><br><span class="line">        s.indexOf(<span class="string">&quot;DA&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="2-练习题"><a href="#2-练习题" class="headerlink" title="2.练习题"></a>2.练习题</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">4.获取两个字符串中最大相同子串。比如：</span><br><span class="line">str1 = &quot;abcwerthelloyuiodef“;str2 = &quot;cvhellobnm“</span><br><span class="line">提示：将短的那个串进行长度依次递减的子串与较长的串比较。</span><br></pre></td></tr></table></figure>
@@ -260,27 +262,6 @@
 
       
 
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
-        </div>
       
     </div>
     <div class="article-info article-info-index">
@@ -404,7 +385,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2023 John Doe
+    		&copy; 2024 John Doe
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
