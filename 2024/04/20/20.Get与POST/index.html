@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>文件，IO流 | Hitokui&#39;s Blog</title>
+  <title>GET与POST | Hitokui&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="0810 File对象 字节流,字符流 抽象基类,访问文件,缓冲流   操作数据单位:字节流,字符流 数据的流向:输入流,输出流 流的角色:节点流,处理流">
+  <meta name="description" content="HTTP请求协议与响应协议 Tomcat服务器 Servlet 关于Servlet传值">
 <meta property="og:type" content="article">
-<meta property="og:title" content="文件，IO流">
-<meta property="og:url" content="http://example.com/2023/08/19/9.IO%E6%B5%811/index.html">
+<meta property="og:title" content="GET与POST">
+<meta property="og:url" content="http://example.com/2024/04/20/20.Get%E4%B8%8EPOST/index.html">
 <meta property="og:site_name" content="Hitokui&#39;s Blog">
-<meta property="og:description" content="0810 File对象 字节流,字符流 抽象基类,访问文件,缓冲流   操作数据单位:字节流,字符流 数据的流向:输入流,输出流 流的角色:节点流,处理流">
+<meta property="og:description" content="HTTP请求协议与响应协议 Tomcat服务器 Servlet 关于Servlet传值">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-08-19T10:40:30.000Z">
-<meta property="article:modified_time" content="2024-03-03T02:52:34.376Z">
+<meta property="article:published_time" content="2024-04-20T12:26:30.000Z">
+<meta property="article:modified_time" content="2024-04-20T13:02:06.701Z">
 <meta property="article:author" content="Hitokui">
-<meta property="article:tag" content="Java SE">
+<meta property="article:tag" content="Servlet">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Hitokui&#39;s Blog" type="application/atom+xml">
@@ -172,107 +172,57 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-9.IO流1" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-20.Get与POST" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      文件，IO流
+      GET与POST
     </h1>
   
 
         
-        <a href="/2023/08/19/9.IO%E6%B5%811/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:40:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
+        <a href="/2024/04/20/20.Get%E4%B8%8EPOST/" class="archive-article-date">
+  	<time datetime="2024-04-20T12:26:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-04-20</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="0810"><a href="#0810" class="headerlink" title="0810"></a>0810</h1><ul>
-<li>File对象</li>
-<li>字节流,字符流</li>
-<li>抽象基类,访问文件,缓冲流</li>
+        <ul>
+<li>HTTP请求协议与响应协议</li>
+<li>Tomcat服务器</li>
+<li>Servlet</li>
+<li>关于Servlet传值<span id="more"></span></li>
 </ul>
-<ol>
-<li>操作数据单位:字节流,字符流</li>
-<li>数据的流向:输入流,输出流</li>
-<li>流的角色:节点流,处理流</li>
+<h1 id="GET与POST的区别"><a href="#GET与POST的区别" class="headerlink" title="GET与POST的区别"></a>GET与POST的区别</h1><ol>
+<li>GET:  </li>
+<li>传值方式:在URL里明文传值,<code>?param1=abc&amp;param2=xyz</code><br>- 只能传字符串</li>
+<li>最大数据量,传输数据量有限,一般在1kb以下</li>
+<li>POST: 用报文传值</li>
+<li>设置Content-Type来传递不同的值<br>- 非明文,更安全</li>
+<li>理论上可以传无限大</li>
 </ol>
-<span id="more"></span>
-
-<h2 id=""><a href="#" class="headerlink" title=""></a></h2><table>
-<thead>
-<tr>
-<th>基本抽象</th>
-<th>文件节点流</th>
-<th>文件处理流&#x2F;缓冲流</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>InputStream</td>
-<td>FileInputStream</td>
-<td>BufferedInputStream</td>
-</tr>
-<tr>
-<td>OutputStream</td>
-<td>FileOutputStream</td>
-<td>BufferedOutputStream</td>
-</tr>
-<tr>
-<td>Reader</td>
-<td>FileReader</td>
-<td>BufferedReader</td>
-</tr>
-<tr>
-<td>Writer</td>
-<td>FileWriter</td>
-<td>BufferedWriter</td>
-</tr>
-</tbody></table>
-<h2 id="字节流与字符流的区别"><a href="#字节流与字符流的区别" class="headerlink" title="字节流与字符流的区别"></a>字节流与字符流的区别</h2><h2 id="四个父类"><a href="#四个父类" class="headerlink" title="四个父类"></a>四个父类</h2><ol>
-<li>字节流 8bit 一个一个操作<ol>
-<li>InputStream</li>
-<li>OutputStream</li>
+<h1 id="如何设置表单以实现GET或POST"><a href="#如何设置表单以实现GET或POST" class="headerlink" title="如何设置表单以实现GET或POST"></a>如何设置表单以实现GET或POST</h1><ol>
+<li>GET</li>
+<li>直接用a标签设置超链接,然后在超链接里传值</li>
+<li>表单form里需要设置<code>action</code>和<code>method</code></li>
+<li>代码<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>1. GET方式<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 1.1 直接通过超链接写死来GET传值 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;param?username=admin&amp;password=123&quot;</span>&gt;</span>Get方式<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 1.2  表单Get传值,注意method, 以及Action(Servlet的名字) --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;param&quot;</span> <span class="attr">method</span>=<span class="string">&quot;get&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 在表单域中,不加name无法提交不能传值 --&gt;</span></span><br><span class="line">    用户名:<span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">    密码:<span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">type</span>=<span class="string">&quot;password&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- CheckBox有三个参数 --&gt;</span></span><br><span class="line">    爱好:<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;checkbox&quot;</span> <span class="attr">name</span>=<span class="string">&quot;hobby&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span>&gt;</span>抽烟</span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;checkbox&quot;</span> <span class="attr">name</span>=<span class="string">&quot;hobby&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span>喝酒</span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;checkbox&quot;</span> <span class="attr">name</span>=<span class="string">&quot;hobby&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2&quot;</span>&gt;</span>烫头</span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span>&gt;</span>提交<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>运行结果<br>- 表单Get提交结果: <code>param?username=admin&amp;password=1234&amp;hobby=0&amp;hobby=1</code></li>
+<li>POST</li>
+<li>代码<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>2. POST方式<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- POST不能用URL传值 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 注意表单的method要改成post --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;param&quot;</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span>&gt;</span></span><br><span class="line">    用户名:<span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">    密码:<span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">type</span>=<span class="string">&quot;password&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">    爱好:<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;checkbox&quot;</span> <span class="attr">name</span>=<span class="string">&quot;hobby&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span>&gt;</span>抽烟</span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;checkbox&quot;</span> <span class="attr">name</span>=<span class="string">&quot;hobby&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span>喝酒</span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;checkbox&quot;</span> <span class="attr">name</span>=<span class="string">&quot;hobby&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2&quot;</span>&gt;</span>烫头</span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span>&gt;</span>提交<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>结果<br>- 表单Post提交结果:<code>http://localhost/TestServlet/param</code><br>- 具体传值要看F12-&gt;网络Network-&gt;负载payload<br>- 也可以在网络Network-&gt;Header里看到<code>Content-Type: application/x-www-form-urlencoded</code>,表示表单传值</li>
 </ol>
-</li>
-<li>字符流 16bit 两个两个操作<ol>
-<li>Reader</li>
-<li>Writer</li>
+<h1 id="使用servlet读取表单的值"><a href="#使用servlet读取表单的值" class="headerlink" title="使用servlet读取表单的值"></a>使用servlet读取表单的值</h1><ol>
+<li>概述</li>
+<li>中文乱码的解决方法</li>
+<li>获取一个参数</li>
+<li>获取一组参数</li>
+<li>代码  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet(&quot;/param&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ParamServlet</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span>&#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 1. GET</span></span><br><span class="line"><span class="comment">  * 重写doGet()方法</span></span><br><span class="line"><span class="comment">    * 默认提交方式就是GET</span></span><br><span class="line"><span class="comment">  * 405方法不允许错误</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">    <span class="comment">//1.1 JSP的编码?背一下</span></span><br><span class="line">    resp.setContentType(<span class="string">&quot;text/html;charset=utf-8&quot;</span>);</span><br><span class="line">    <span class="comment">//1.2 获取表单参数,然后打印出来,只有字符串和字符串数组两种类型</span></span><br><span class="line">    <span class="comment">//获取一个参数</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">username</span> <span class="operator">=</span> req.getParameter(<span class="string">&quot;username&quot;</span>);</span><br><span class="line">    <span class="type">String</span> <span class="variable">password</span> <span class="operator">=</span> req.getParameter(<span class="string">&quot;password&quot;</span>);</span><br><span class="line">    <span class="comment">//获取一个字符串数组</span></span><br><span class="line">    String[] hobbys = req.getParameterValues(<span class="string">&quot;hobby&quot;</span>);</span><br><span class="line">    <span class="comment">//打印</span></span><br><span class="line">    out.print(<span class="string">&quot;用户名:&quot;</span>+username);</span><br><span class="line">    out.print(<span class="string">&quot;&lt;br&gt;密码:&quot;</span>+password);</span><br><span class="line">    <span class="keyword">for</span>(String hobby : hobbys) &#123;</span><br><span class="line">      out.print(<span class="string">&quot;&lt;br&gt;爱好:&quot;</span>+hobby);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 2. POST</span></span><br><span class="line"><span class="comment">  * 重写doPost()方法</span></span><br><span class="line"><span class="comment">  * 注意POST使用请求报文传值的,默认是欧洲编码,因此也需要设置编码</span></span><br><span class="line"><span class="comment">  * 可以通过在post里调用doGet()来减少代码冗余</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">doPost</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">    <span class="comment">//2.1 在GET的基础上还需要请求报文的编码,获取参数的方法和GET完全一致</span></span><br><span class="line">    req.setCharacterEncoding(<span class="string">&quot;utf-8&quot;</span>);</span><br><span class="line">    doGet(req,resp);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
 </ol>
-</li>
-</ol>
-<ul>
-<li>字符流Test,只能用于处理文本文件,字符流&#x3D;字节流+解码的过程,处理图片之类的二进制文件会发生乱码</li>
-<li>字节流Test,没有解码过程,可以用来处理二进制文件</li>
-</ul>
-<h2 id="文件读取过程"><a href="#文件读取过程" class="headerlink" title="文件读取过程"></a>文件读取过程</h2><pre><code>    /*
-    1.创建File对象(文件必须存在)
-    2.创建相应的输入流,将file对象作为参数
-    3.具体读入过程 无参的read()方法一次读一个,读到-1为止
-    4.关闭流资源
-     */
-</code></pre>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">        缓冲流复制文件的例子</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">copy</span>&#123;</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">myCopyFile2</span><span class="params">(File srcFile, File descFile)</span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="type">BufferedReader</span> <span class="variable">br</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">      <span class="type">BufferedWriter</span> <span class="variable">bw</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">         <span class="comment">//缓冲流其实是包装了文件输入流,因此对象是FileReader</span></span><br><span class="line">         br = <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(<span class="keyword">new</span> <span class="title class_">FileReader</span>(srcFile));</span><br><span class="line">         bw = <span class="keyword">new</span> <span class="title class_">BufferedWriter</span>(<span class="keyword">new</span> <span class="title class_">FileWriter</span>(descFile));</span><br><span class="line">         <span class="comment">//1. 字节流的写法</span></span><br><span class="line"><span class="comment">//            byte[] b = new byte[1024];    //和磁盘分片有关</span></span><br><span class="line"><span class="comment">//            int len = -1;</span></span><br><span class="line"><span class="comment">//            while ((len= br.read(b))!=-1)&#123;    //读到-1说明读完了</span></span><br><span class="line"><span class="comment">//                //fw.write(new String(c,0,len));</span></span><br><span class="line"><span class="comment">//                bw.write(b,0,len);//只要没有解码就不会出现乱码</span></span><br><span class="line"><span class="comment">//            &#125;</span></span><br><span class="line">         <span class="comment">//2. 字符流的写法</span></span><br><span class="line">         <span class="type">String</span> <span class="variable">content</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">         <span class="keyword">while</span> ((content = br.readLine())!=<span class="literal">null</span>)&#123;   <span class="comment">//缓冲字符流特有的一次读一行的方法</span></span><br><span class="line">            bw.write(content);</span><br><span class="line">            bw.newLine();   <span class="comment">//打印换行符,只是替换掉println(换行符)而已</span></span><br><span class="line">         &#125;</span><br><span class="line">      &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">         e.printStackTrace();</span><br><span class="line">      &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="comment">/*</span></span><br><span class="line"><span class="comment">            先打开的后关闭原则,因此先关闭写入流</span></span><br><span class="line"><span class="comment">            另外注意两个close不能写到一个try里面,不然上面的如果失败,下面的就不工作了</span></span><br><span class="line"><span class="comment">             */</span></span><br><span class="line">         <span class="keyword">try</span> &#123;</span><br><span class="line">            bw.close(); <span class="comment">//不关不往里面写</span></span><br><span class="line">         &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">try</span> &#123;</span><br><span class="line">            br.close();<span class="comment">//不关占内存</span></span><br><span class="line">         &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="缓冲流的优势"><a href="#缓冲流的优势" class="headerlink" title="缓冲流的优势"></a>缓冲流的优势</h2><ul>
-<li>1.字节缓冲流</li>
-<li>处理流,是对字节流的包装</li>
-<li></li>
-<li>里面定义了一个8kb的数组,先把数组先放到8kb的缓冲数组里,当8kb的数组满了,才会一次性取得,因此速度快(相当于水桶)</li>
-<li>这个8kb可以通过构造函数来修改</li>
-<li>之前是每次读取1024,取到内存里面,取得次数多了</li>
-<li></li>
-<li>与FileInputStream相比,这个明显更快</li>
-<li></li>
-<li></li>
-<li><ol start="2">
-<li>字符缓冲流</li>
-</ol>
-</li>
-</ul>
 
       
 
@@ -286,7 +236,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Servlet</a>
         		</li>
       		
 		</ul>
@@ -353,7 +303,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2023/08/19/9.IO%E6%B5%811/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2024/04/20/20.Get%E4%B8%8EPOST/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -367,18 +317,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2023/08/19/10.IO%E6%B5%812/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2024/04/20/21.Cookie%E4%B8%8ESession/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          转换流对象流标准流
+          Cookie与Session,转发与重定向
         
       </div>
     </a>
   
   
-    <a href="/2023/08/19/6.%E8%8C%83%E5%9E%8B%E6%9E%9A%E4%B8%BE%E6%B3%A8%E8%A7%A3/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">范型，枚举，注解</div>
+    <a href="/2024/04/20/19.HTTP%E5%8D%8F%E8%AE%AE/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">HTTP请求与相应,Tomcat,Servlet概述</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -405,7 +355,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0810"><span class="toc-number">1.</span> <span class="toc-text">0810</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E8%8A%82%E6%B5%81%E4%B8%8E%E5%AD%97%E7%AC%A6%E6%B5%81%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.2.</span> <span class="toc-text">字节流与字符流的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E4%B8%AA%E7%88%B6%E7%B1%BB"><span class="toc-number">1.3.</span> <span class="toc-text">四个父类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E8%BF%87%E7%A8%8B"><span class="toc-number">1.4.</span> <span class="toc-text">文件读取过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%93%E5%86%B2%E6%B5%81%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="toc-number">1.5.</span> <span class="toc-text">缓冲流的优势</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#GET%E4%B8%8EPOST%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.</span> <span class="toc-text">GET与POST的区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E8%A1%A8%E5%8D%95%E4%BB%A5%E5%AE%9E%E7%8E%B0GET%E6%88%96POST"><span class="toc-number">2.</span> <span class="toc-text">如何设置表单以实现GET或POST</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8servlet%E8%AF%BB%E5%8F%96%E8%A1%A8%E5%8D%95%E7%9A%84%E5%80%BC"><span class="toc-number">3.</span> <span class="toc-text">使用servlet读取表单的值</span></a></li></ol>
                     </div>
                 </span>
             </div>
