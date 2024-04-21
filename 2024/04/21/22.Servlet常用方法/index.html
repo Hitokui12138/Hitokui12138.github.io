@@ -6,15 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Tag: Hexo | Hitokui&#39;s Blog</title>
+  <title>Servlet常用方法总结 | Hitokui&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hitokui&#39;s Blog">
-<meta property="og:url" content="http://example.com/tags/Hexo/index.html">
+  <meta name="description" content="HttpServletRequest HttpServletResponse Cookie Session ServletContext">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Servlet常用方法总结">
+<meta property="og:url" content="http://example.com/2024/04/21/22.Servlet%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/index.html">
 <meta property="og:site_name" content="Hitokui&#39;s Blog">
+<meta property="og:description" content="HttpServletRequest HttpServletResponse Cookie Session ServletContext">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-04-21T01:18:30.000Z">
+<meta property="article:modified_time" content="2024-04-21T01:26:08.625Z">
 <meta property="article:author" content="Hitokui">
-<meta property="article:tag" content="Blog, Java">
+<meta property="article:tag" content="Servlet">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Hitokui&#39;s Blog" type="application/atom+xml">
@@ -168,228 +172,277 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-22.Servlet常用方法" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2024" class="archive-year">2024</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2024/03/03/12.%E5%8D%9A%E5%AE%A2%E4%B9%A6%E5%86%99/" class="archive-article-date">
-  	<time datetime="2024-03-03T02:52:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-03-03</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2024/03/03/12.%E5%8D%9A%E5%AE%A2%E4%B9%A6%E5%86%99/">博客书写</a>
+    <h1 class="article-title" itemprop="name">
+      Servlet常用方法总结
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2024/04/21/22.Servlet%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/" class="archive-article-date">
+  	<time datetime="2024-04-21T01:18:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-04-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>HttpServletRequest</li>
+<li>HttpServletResponse</li>
+<li>Cookie</li>
+<li>Session</li>
+<li>ServletContext<span id="more"></span></li>
+</ul>
+<h2 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h2><ol>
+<li><p>5个对象</p>
+<ol>
+<li>HttpServletRequest</li>
+<li>HttpServletResponse</li>
+<li>Cookie</li>
+<li>Session</li>
+<li>ServletContext</li>
+</ol>
+</li>
+<li><p>HttpServletRequest对象</p>
+<ol start="0">
+<li>这个对象是servlet容器(tomcat)传入进来的,可以直接使用</li>
+<li>HttpServletRequest是ServletRequest的子接口<ol>
+<li>考虑到以后可能会有其他协议,因此虽然Http这个用得最多,仍然不合并</li>
+</ol>
+</li>
+<li>常用方法 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1. 获得完整URL,从http开始,到?结束</span></span><br><span class="line"><span class="comment">//“http://localhost/TestServlet/dept/add”</span></span><br><span class="line">req.getRequestURL().toString();</span><br><span class="line"><span class="comment">//2. 获得从项目名称开始,?结束的URI</span></span><br><span class="line"><span class="comment">//“/TestServlet/dept/add”</span></span><br><span class="line">req.getRequestURI();</span><br><span class="line"><span class="comment">//2.1 &quot;/dept&quot;</span></span><br><span class="line">req.getServletPath();</span><br><span class="line"><span class="comment">//3. 获得?后面的整个参数列表字符串</span></span><br><span class="line">req.getQueryString();</span><br><span class="line"><span class="comment">//4. 请求方式</span></span><br><span class="line">req.getMethod();</span><br><span class="line"><span class="comment">//5. Http版本号</span></span><br><span class="line">req.getProtocol();</span><br><span class="line"><span class="comment">//6. webapp的名字</span></span><br><span class="line">req.getContextpath();</span><br></pre></td></tr></table></figure></li>
+<li>只想拿到特定参数 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1. 指定名称(接收到的总是一个字符串)</span></span><br><span class="line"><span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> req.getParameter(<span class="string">&quot;uname&quot;</span>);</span><br><span class="line"><span class="comment">//2. 指定名称获取所有值(复选框)</span></span><br><span class="line">String[] hobbys = req.getParameterValues(<span class="string">&quot;hobby&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+<li>req乱码问题<ol start="0">
+<li>乱码的原因:<ol>
+<li>req有一个默认的编码,ISO-8859-1,不支持中文</li>
+</ol>
+</li>
+<li><code>tomcat8</code>之后的<code>GET请求</code>不会发生乱码<ol>
+<li>如果是tomcat8之前的GET请求<ol>
+<li>如果本身不乱码,强行使用者的话也会发生乱码 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//字符串转码,GET,POST都能用</span></span><br><span class="line"><span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(req.getParameter(<span class="string">&quot;uname&quot;</span>).getBytes(<span class="string">&quot;ISO-8859-1&quot;</span>),<span class="string">&quot;UTF-8&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><code>POST请求</code>无论什么版本,仍然会乱码,使用表单来模拟POST请求<ol>
+<li>设置服务器解析编码的格式<ol>
+<li>注意,必须在<code>获取参数之前</code>设置编码格式 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这个方法只对POST请求有效,最常用</span></span><br><span class="line">req.setCharacterEncoding(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line"><span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> req.getParameter(<span class="string">&quot;uname&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>请求转发<ol>
+<li>这是一种<code>服务器</code>行为,可以将请求从服务端跳转到客户端,或者跳转到指定的Servlet<ol>
+<li><code>服务端跳转</code>,把一个请求从后台跳转到前台(或者其他servlet)</li>
+<li>地址栏不变</li>
+<li>两个url用的都是<code>同一个请求</code>(自始至终只有一个请求),因此使用的对象也是<code>req</code></li>
+<li>request数据可以共享 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1. 跳转到另一个servlet</span></span><br><span class="line">req.getRequestDispartcher(<span class="string">&quot;s02&quot;</span>).forward(req,resp);</span><br><span class="line"><span class="comment">//2. 跳转到某个jsp页面,或者html页面</span></span><br><span class="line">req.getRequestDispartcher(<span class="string">&quot;login.jsp&quot;</span>).forward(req,resp);</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>request作用域,req域对象<ol start="0">
+<li>后台想给页面传数据,先保存在域对象,然后请求转发到页面</li>
+<li>通过req传递数据,只在一次请求中有效,也就是说只在请求转发中有效 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1. 设置域对象内容,第二个参数是obj类型</span></span><br><span class="line">req.setAttribute(<span class="string">&quot;age&quot;</span>,<span class="number">18</span>);</span><br><span class="line">req.setAttribute(<span class="string">&quot;list&quot;</span>,list);</span><br><span class="line"><span class="comment">//2. 获取域对象内容,obj需要转成需要的类型</span></span><br><span class="line"><span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> (String)req.getAttribute(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">List&lt;String&gt; list2 = (List&lt;String&gt;)req.getAttribute(<span class="string">&quot;list&quot;</span>);</span><br><span class="line"><span class="comment">//3. 删除域对象</span></span><br><span class="line">req.getAttribute(<span class="string">&quot;name&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>HttpServletResponse对象</p>
+<ol>
+<li>主要作用是将web服务器处理好的响应数据返回给客户端 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1. 字符输出流(只能输出字符串)</span></span><br><span class="line"><span class="comment">//resp.getWriter().write(&quot;&quot;)</span></span><br><span class="line"><span class="type">PrintWrite</span> <span class="variable">writer</span> <span class="operator">=</span> resp.getWriter();</span><br><span class="line">writer.write(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line"><span class="comment">//2. 字节输出流(可以输出一切数据)</span></span><br><span class="line"><span class="type">ServletOutputStream</span> <span class="variable">out</span> <span class="operator">=</span> resp.getOutputStream();</span><br><span class="line">out.write(<span class="string">&quot;hi&quot;</span>.getBytes());</span><br><span class="line"><span class="comment">//3. 要注意这两个流不能同时使用,否则会报错</span></span><br><span class="line"><span class="comment">//因为resp对象只有一个</span></span><br></pre></td></tr></table></figure></li>
+<li>resp的乱码问题<ol>
+<li>字符流中使用中文一定会乱码<ol>
+<li>对于getWriter得到的字符流,服务端在进行编码时默认使用ISO-8859-1</li>
+<li>让服务端和客户端都支持中文 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1. 设置服务端的编码格式</span></span><br><span class="line">resp.setCharacterEncoding(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line"><span class="comment">//但是还是会乱码,因为客户端的编码还是之前的</span></span><br><span class="line"><span class="comment">//2. 设置客户端的编码格式和mine类型</span></span><br><span class="line">resp.setHeader(<span class="string">&quot;content-type&quot;</span>,<span class="string">&quot;text/html;charset=UTF-8&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+<li>同时设置两端的方式(最常用) <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">resp.setContentType(<span class="string">&quot;text/html;charset=UTF-8&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li>字节流,也要求服务端和客户端编码方式一样<ol>
+<li>最好把不确定改成确定,也改一下编码<ul>
+<li><code>resp.setContentType(&quot;text/html;charset=UTF-8&quot;);</code></li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>重定向<ol>
+<li>客户端发出第一次请求,服务器返回一个新地址,客户端发出第二次请求,服务器返回响应结果<ol>
+<li>服务端指导的客户端行为,存在两次请求,地址栏也会发生改变</li>
+<li>两次请求的参数是不共享的  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//跳转到另一个Servlet,地址栏也会发生改变</span></span><br><span class="line">resp.sendRedirect(<span class="string">&quot;s05&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>请求转发与重定向</p>
+<ol>
+<li>写法 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">req.getRequestDispartcher(<span class="string">&quot;s02&quot;</span>).forward(req,resp);</span><br><span class="line">resp.sendRedirect(<span class="string">&quot;s02&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Servlet</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Readme//" class="article-tag-list-link color2">Readme</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2024/03/03/11.%E5%8D%9A%E5%AE%A2%E7%BE%8E%E5%8C%96/" class="archive-article-date">
-  	<time datetime="2024-03-03T02:49:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-03-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2024/03/03/11.%E5%8D%9A%E5%AE%A2%E7%BE%8E%E5%8C%96/">博客美化</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Readme//" class="article-tag-list-link color2">Readme</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
       
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2023" class="archive-year">2023</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/03/2.%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="archive-article-date">
-  	<time datetime="2023-08-03T12:12:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/03/2.%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">博客搭建</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Readme//" class="article-tag-list-link color2">Readme</a>
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2024/04/21/22.Servlet%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/03/1.hello-world/" class="archive-article-date">
-  	<time datetime="2023-08-03T11:24:06.693Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-03</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2024/04/21/23.JDBC%E5%85%A5%E9%97%A8/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          JDBC入门
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/04/20/21.Cookie%E4%B8%8ESession/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Cookie与Session,转发与重定向</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/03/1.hello-world/">Hello World</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Readme//" class="article-tag-list-link color2">Readme</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">常用方法</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+    </div>
+</aside>
+
+
+
   
   
-    </div></section>
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -412,9 +465,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,

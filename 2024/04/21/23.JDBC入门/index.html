@@ -6,15 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Tag: Hexo | Hitokui&#39;s Blog</title>
+  <title>JDBC入门 | Hitokui&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hitokui&#39;s Blog">
-<meta property="og:url" content="http://example.com/tags/Hexo/index.html">
+  <meta name="description" content="JDBC入门 Druid数据源,连接池 PrepareStayement与CallableStatement">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JDBC入门">
+<meta property="og:url" content="http://example.com/2024/04/21/23.JDBC%E5%85%A5%E9%97%A8/index.html">
 <meta property="og:site_name" content="Hitokui&#39;s Blog">
+<meta property="og:description" content="JDBC入门 Druid数据源,连接池 PrepareStayement与CallableStatement">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-04-21T01:29:30.000Z">
+<meta property="article:modified_time" content="2024-04-21T02:27:42.441Z">
 <meta property="article:author" content="Hitokui">
-<meta property="article:tag" content="Blog, Java">
+<meta property="article:tag" content="JDBC">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Hitokui&#39;s Blog" type="application/atom+xml">
@@ -168,228 +172,251 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-23.JDBC入门" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2024" class="archive-year">2024</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2024/03/03/12.%E5%8D%9A%E5%AE%A2%E4%B9%A6%E5%86%99/" class="archive-article-date">
-  	<time datetime="2024-03-03T02:52:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-03-03</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2024/03/03/12.%E5%8D%9A%E5%AE%A2%E4%B9%A6%E5%86%99/">博客书写</a>
+    <h1 class="article-title" itemprop="name">
+      JDBC入门
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2024/04/21/23.JDBC%E5%85%A5%E9%97%A8/" class="archive-article-date">
+  	<time datetime="2024-04-21T01:29:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-04-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>JDBC入门</li>
+<li>Druid数据源,连接池</li>
+<li>PrepareStayement与CallableStatement<span id="more"></span></li>
+</ul>
+<h2 id="JDBC"><a href="#JDBC" class="headerlink" title="JDBC"></a>JDBC</h2><ol>
+<li>概念<ul>
+<li>Java DataBase Connectivity  Java 数据库连接， Java语言操作数据库</li>
+<li>JDBC本质：其实是官方（sun公司）定义的一套操作所有关系型数据库的规则，即接口。各个数据库厂商去实现这套接口，提供数据库驱动jar包。我们可以使用这套接口（JDBC）编程，真正执行的代码是驱动jar包中的实现类。</li>
+</ul>
+</li>
+<li>快速入门<ol>
+<li>导入驱动jar包 <code>mysql-connector-java-8.0.11.jar</code><ol>
+<li>MYSQL<ol>
+<li>复制mysql-connector-java-8.0.11.jar到项目的libs目录下</li>
+<li>右键–&gt;Add As Library</li>
+</ol>
+</li>
+<li>Druid<ol>
+<li>druid-0.1.10.jar,</li>
+</ol>
+<ul>
+<li>如果带source,java文件,源码</li>
+<li>不带source,编译后的class文件用来导入</li>
+</ul>
+<ol start="2">
+<li>commons-logging-1.2.jar,APACH公司的日志包</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>配置URL等信息,注册驱动<ol>
+<li>对于Oracle或者MySQL <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 新建一个util包</span></span><br><span class="line"><span class="comment">* 主要负责注册驱动,取得连接,释放资源 </span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">JdbcMysqlUtils</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">DRIVER</span> <span class="operator">=</span> <span class="string">&quot;com.mysql.cj.jdbc.Driver&quot;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">URL</span> <span class="operator">=</span> <span class="string">&quot;jdbc:mysql://localhost:3306/myschool?serverTimezone=GMT&amp;useSSL=false&quot;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">USER</span> <span class="operator">=</span> <span class="string">&quot;root&quot;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">PASSWORD</span> <span class="operator">=</span> <span class="string">&quot;admin&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 1. 注册驱动,只在class对象创建时执行一次</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Class.forName(DRIVER);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//....</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>对于Druid<ol>
+<li>数据库连接池<ul>
+<li>其实就是一个容器(集合)，存放数据库连接的容器。</li>
+<li>当系统初始化好后，容器被创建，容器中会申请一些连接对象，当用户来访问数据库时，从容器中获取连接对象，用户访问完之后，会将连接对象归还给容器。</li>
+<li>标准接口：<code>DataSource</code>   javax.sql包下的</li>
+</ul>
+</li>
+<li>一般我们不去实现它，有数据库厂商来实现<ol>
+<li>C3P0：数据库连接池技术</li>
+<li>Druid：数据库连接池实现技术，由阿里巴巴提供的 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义一个数据源</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> DataSource datasource;</span><br><span class="line"><span class="comment">//初始化DruidDataSource</span></span><br><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">    <span class="comment">//1.从配置文件里读取Druid的配置信息</span></span><br><span class="line">    <span class="type">Properties</span> <span class="variable">prop</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Properties</span>();</span><br><span class="line">    <span class="type">InputStream</span> <span class="variable">is</span> <span class="operator">=</span> DruidUtils.class.getClassLoader().getResourceAsStream(<span class="string">&quot;druid.properties&quot;</span>);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">    prop.load(is);<span class="comment">//如果读不出来的话可以试试Rebuild Project</span></span><br><span class="line">    <span class="comment">//2. 初始化datasource</span></span><br><span class="line">    datasource = (DruidDataSource) DruidDataSourceFactory.createDataSource(prop);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取连接</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Connection <span class="title function_">getConn</span><span class="params">()</span> <span class="keyword">throws</span> SQLException &#123;</span><br><span class="line">        <span class="keyword">return</span> datasource.getConnection();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>获取数据库连接对象 Connection <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//MYSQL的写法</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Connection <span class="title function_">getConn</span><span class="params">()</span> <span class="keyword">throws</span> SQLException &#123;</span><br><span class="line">    <span class="keyword">return</span> DriverManager.getConnection(URL, USER, PASSWORD);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Druid的写法</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Connection <span class="title function_">getConn</span><span class="params">()</span> <span class="keyword">throws</span> SQLException &#123;</span><br><span class="line">    <span class="keyword">return</span> datasource.getConnection();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>定义sql<ol>
+<li>取得员工一览 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ArrayList&lt;Dept&gt; <span class="title function_">findAllDept</span><span class="params">()</span> &#123;</span><br><span class="line">    ArrayList&lt;Dept&gt; deptList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="type">StringBuilder</span> <span class="variable">builder</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">    builder.append(<span class="string">&quot; SELECT deptno,dname,loc &quot;</span>);</span><br><span class="line">    builder.append(<span class="string">&quot; FROM dept &quot;</span>);</span><br><span class="line">    <span class="comment">//....</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li>获取执行sql语句的对象 Statement<ol>
+<li>创建DAO类,初始化下面这三种资源 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">EmpDao</span> &#123;</span><br><span class="line">    Connection conn;</span><br><span class="line">    PreparedStatement pstm;<span class="comment">//执行sql语句的对象</span></span><br><span class="line">    ResultSet rs;<span class="comment">//结果集对象</span></span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li>执行sql，接受返回结果</li>
+<li>处理结果<ol>
+<li>MYSQL <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">     <span class="keyword">try</span> &#123;</span><br><span class="line">         <span class="comment">//1. 取得连接</span></span><br><span class="line">         conn = JDBCUtils.getConn();</span><br><span class="line">         <span class="comment">//2. 获得prepareStatement</span></span><br><span class="line">         pstm = conn.prepareStatement(sql);</span><br><span class="line">         <span class="comment">//3. 执行</span></span><br><span class="line">         <span class="comment">//3.1 查询的执行方法</span></span><br><span class="line">         rs = pstm.executeQuery();</span><br><span class="line">         <span class="keyword">while</span>(rs.next()) &#123;</span><br><span class="line">             <span class="type">Emp</span> <span class="variable">emp</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Emp</span>();</span><br><span class="line">             emp.setEmpno(rs.getInt(<span class="string">&quot;empno&quot;</span>));</span><br><span class="line">             emp.setEname(rs.getString(<span class="string">&quot;ename&quot;</span>));</span><br><span class="line">             empList.add(emp);</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">return</span> empList;</span><br><span class="line">         <span class="comment">//3.2 如果是增删改</span></span><br><span class="line">         <span class="type">int</span> <span class="variable">rows</span> <span class="operator">=</span> pstm.executeUpdate(sql);<span class="comment">//更新影响到的条数</span></span><br><span class="line"><span class="keyword">return</span> rows;</span><br><span class="line">     &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">         e.printStackTrace();</span><br><span class="line">     &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">         DruidUtils.close(conn, pstm, rs);<span class="comment">//释放资源</span></span><br><span class="line">     &#125;</span><br></pre></td></tr></table></figure></li>
+<li>Druid<ul>
+<li>只要把DAO层的之前的jdbcUtil改成DruidUtils就行</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>释放资源,注意关闭资源的顺序 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 3. 关闭各个外部资源</span></span><br><span class="line"><span class="comment">* 这里使用Statement以供PreparedStatement和CallableStatement使用,</span></span><br><span class="line"><span class="comment">* 子类替代父类,多态</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">close</span><span class="params">(Connection conn, Statement pstm, ResultSet rs)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (rs != <span class="literal">null</span>) &#123;	<span class="comment">//先关闭ResultSet</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            rs.close();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (pstm != <span class="literal">null</span>) &#123;	<span class="comment">//然后是PreparedStatement</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            pstm.close();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (conn != <span class="literal">null</span>) &#123;	<span class="comment">//最后关闭Connection</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            conn.close();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 4. 如果没有用到结果集rs一个重载方法</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">close</span><span class="params">(Connection conn, PreparedStatement pstm)</span> &#123;</span><br><span class="line">    close(conn, pstm, <span class="literal">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li>CallableStatement<ol>
+<li>现在有一个存储过程<ul>
+<li><code>CREATE OR REPLACE PROCEDURE page(p_cur_emp OUT SYS_REFCURSOR, p_offset IN NUMBER, p_pageSize IN NUMBER)</code></li>
+<li>有一个OUT参数和两个IN参数</li>
+<li>之前的PrepareStatement的set方法只能处理In参数,不能处理OUT参数</li>
+<li>使用子类CallableStatement的<code>registerOutParameter()</code>方法来<code>注册</code>OUT参数</li>
+</ul>
+</li>
+<li>具体看0823<br> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ArrayList&lt;Emp&gt; <span class="title function_">getALLempByID</span><span class="params">(<span class="type">int</span> deptno, <span class="type">int</span> curPage)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">offset</span> <span class="operator">=</span> (curPage - <span class="number">1</span>) * <span class="number">3</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">pageSize</span> <span class="operator">=</span> curPage * <span class="number">3</span>;</span><br><span class="line">    <span class="type">String</span> <span class="variable">sql</span> <span class="operator">=</span> <span class="string">&quot;&#123;call getALLempByID(?,?,?,?)&#125;&quot;</span>; <span class="comment">//1.调用存储过程时大括号还是写着吧</span></span><br><span class="line">    ArrayList&lt;Emp&gt; empList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 和prst一样,应该定义一个各方法共用的CallableStatement成员变量cst</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        conn = JdbcOracleUtils.getConn();</span><br><span class="line">        cst = conn.prepareCall(sql);    <span class="comment">//2.初始化cst,多态:子类当作父类来用</span></span><br><span class="line">        cst.setInt(<span class="number">1</span>, deptno);<span class="comment">//3. 对于IN参数,还是SET</span></span><br><span class="line">        cst.registerOutParameter(<span class="number">2</span>, OracleTypes.CURSOR);<span class="comment">//4. 对于OUT参数,使用registerOutParameter()方法,注意Type的写法,Oracle和MYSQL有所不同</span></span><br><span class="line">        cst.setInt(<span class="number">3</span>, offset);</span><br><span class="line">        cst.setInt(<span class="number">4</span>, pageSize);</span><br><span class="line">        <span class="comment">//假如还有一个INOUT参数</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        cst.setInt(3, sal); //INOUT,既需要设值,又需要注册</span></span><br><span class="line"><span class="comment">        cst.registerOutParameter(3, OracleTypes.NUMBER);    //INOUT,也需要注册</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line"></span><br><span class="line">        cst.execute();</span><br><span class="line">        rs = (ResultSet)cst.getObject(<span class="number">2</span>);<span class="comment">//5.取得OUT的游标,这里取得的是一个对象,需要强制转型</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (rs.next()) &#123;</span><br><span class="line">            <span class="type">Emp</span> <span class="variable">emp</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Emp</span>();</span><br><span class="line">            emp.setEmpno(rs.getInt(<span class="string">&quot;empno&quot;</span>));</span><br><span class="line">            emp.setEname(rs.getString(<span class="string">&quot;ename&quot;</span>));</span><br><span class="line">            empList.add(emp);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> empList;</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">catch</span> (SQLException throwables) &#123;</span><br><span class="line">        throwables.printStackTrace();</span><br><span class="line">    &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">        JdbcOracleUtils.close(conn, cst, rs);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> empList;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JDBC</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Readme//" class="article-tag-list-link color2">Readme</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2024/03/03/11.%E5%8D%9A%E5%AE%A2%E7%BE%8E%E5%8C%96/" class="archive-article-date">
-  	<time datetime="2024-03-03T02:49:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-03-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2024/03/03/11.%E5%8D%9A%E5%AE%A2%E7%BE%8E%E5%8C%96/">博客美化</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Readme//" class="article-tag-list-link color2">Readme</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
       
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2023" class="archive-year">2023</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/03/2.%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="archive-article-date">
-  	<time datetime="2023-08-03T12:12:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/03/2.%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">博客搭建</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Readme//" class="article-tag-list-link color2">Readme</a>
+        			<a href="/categories/JAVA//" class="article-tag-list-link color5">JAVA</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2024/04/21/23.JDBC%E5%85%A5%E9%97%A8/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/08/03/1.hello-world/" class="archive-article-date">
-  	<time datetime="2023-08-03T11:24:06.693Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-03</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2024/04/21/22.Servlet%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Servlet常用方法总结</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/03/1.hello-world/">Hello World</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Readme//" class="article-tag-list-link color2">Readme</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JDBC"><span class="toc-number">1.</span> <span class="toc-text">JDBC</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+    </div>
+</aside>
+
+
+
   
   
-    </div></section>
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -412,9 +439,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
