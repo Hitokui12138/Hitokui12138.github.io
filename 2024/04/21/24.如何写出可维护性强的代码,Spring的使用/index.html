@@ -6,22 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>多线程 | Hitokui&#39;s Blog</title>
+  <title>如何写出可维护性强的代码,Spring的使用 | Hitokui&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="多线程 线程的创建方法 线程的常用方法  A.线程的创建与使用(4种) 继承Thread类(1.5之前的方法) 实现Runnable接口(1.5之前的方法) 实现Callable接口(1.5之后) 线程池静态方法">
+  <meta name="description" content="开闭原则 面向抽象发展的过程 Spring的使用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="多线程">
-<meta property="og:url" content="http://example.com/2023/08/19/7.%E5%A4%9A%E7%BA%BF%E7%A8%8B/index.html">
+<meta property="og:title" content="如何写出可维护性强的代码,Spring的使用">
+<meta property="og:url" content="http://example.com/2024/04/21/24.%E5%A6%82%E4%BD%95%E5%86%99%E5%87%BA%E5%8F%AF%E7%BB%B4%E6%8A%A4%E6%80%A7%E5%BC%BA%E7%9A%84%E4%BB%A3%E7%A0%81,Spring%E7%9A%84%E4%BD%BF%E7%94%A8/index.html">
 <meta property="og:site_name" content="Hitokui&#39;s Blog">
-<meta property="og:description" content="多线程 线程的创建方法 线程的常用方法  A.线程的创建与使用(4种) 继承Thread类(1.5之前的方法) 实现Runnable接口(1.5之前的方法) 实现Callable接口(1.5之后) 线程池静态方法">
+<meta property="og:description" content="开闭原则 面向抽象发展的过程 Spring的使用">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/img.png">
-<meta property="article:published_time" content="2023-08-19T10:29:30.000Z">
-<meta property="article:modified_time" content="2024-03-03T02:52:25.623Z">
+<meta property="article:published_time" content="2024-04-21T05:27:30.000Z">
+<meta property="article:modified_time" content="2024-04-21T08:03:01.002Z">
 <meta property="article:author" content="Hitokui">
-<meta property="article:tag" content="Java SE">
+<meta property="article:tag" content="Spring">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/img.png">
   
     <link rel="alternative" href="/atom.xml" title="Hitokui&#39;s Blog" type="application/atom+xml">
   
@@ -174,72 +172,158 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-7.多线程" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-24.如何写出可维护性强的代码,Spring的使用" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      多线程
+      如何写出可维护性强的代码,Spring的使用
     </h1>
   
 
         
-        <a href="/2023/08/19/7.%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:29:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
+        <a href="/2024/04/21/24.%E5%A6%82%E4%BD%95%E5%86%99%E5%87%BA%E5%8F%AF%E7%BB%B4%E6%8A%A4%E6%80%A7%E5%BC%BA%E7%9A%84%E4%BB%A3%E7%A0%81,Spring%E7%9A%84%E4%BD%BF%E7%94%A8/" class="archive-article-date">
+  	<time datetime="2024-04-21T05:27:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-04-21</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h1><ul>
-<li>线程的创建方法</li>
-<li>线程的常用方法</li>
+        <ul>
+<li>开闭原则</li>
+<li>面向抽象发展的过程</li>
+<li>Spring的使用<span id="more"></span></li>
 </ul>
-<h2 id="A-线程的创建与使用-4种"><a href="#A-线程的创建与使用-4种" class="headerlink" title="A.线程的创建与使用(4种)"></a>A.线程的创建与使用(4种)</h2><ol>
-<li>继承Thread类(1.5之前的方法)</li>
-<li>实现Runnable接口(1.5之前的方法)</li>
-<li>实现Callable接口(1.5之后)</li>
-<li>线程池静态方法</li>
+<h2 id="开闭原则"><a href="#开闭原则" class="headerlink" title="开闭原则"></a>开闭原则</h2><ol>
+<li><code>开闭原则(Open Closed Principle)</code>是实现<code>可维护代码</code>的基础<ol>
+<li>软件,函数,类,对扩展是开放的,修改是封闭的</li>
+<li>对于修改的式样,最好去新增一个模块&#x2F;类,来代替原来的</li>
 </ol>
-<span id="more"></span>
-
-<h3 id="1-Thread"><a href="#1-Thread" class="headerlink" title="1. Thread"></a>1. Thread</h3><h4 id="1-1-实现方法"><a href="#1-1-实现方法" class="headerlink" title="1.1 实现方法"></a>1.1 实现方法</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1.继承Thread,重写run()</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyThread</span> <span class="keyword">extends</span> <span class="title class_">Thread</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ThreadTest</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">//2.new *多个* 子类对象</span></span><br><span class="line">        <span class="type">MyThread</span> <span class="variable">myThread1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyThread</span>();</span><br><span class="line">        <span class="type">MyThread</span> <span class="variable">myThread2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyThread</span>();</span><br><span class="line">        <span class="comment">//3.用子类对象调用start()方法</span></span><br><span class="line">        myThread1.start();</span><br><span class="line">        myThread2.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="1-2-memo"><a href="#1-2-memo" class="headerlink" title="1.2 memo"></a>1.2 memo</h4><ul>
-<li>start()方法能启动一个线程并调用run()方法</li>
-<li>不能直接调用run(),因为会变成普通方法,不启动多线程</li>
+</li>
+<li>怎样实现开闭原则<ol>
+<li>面向抽象编程<ul>
+<li>interface,abstract</li>
 </ul>
-<hr>
-<h3 id="2-Runnable"><a href="#2-Runnable" class="headerlink" title="2. Runnable"></a>2. Runnable</h3><h4 id="2-1-实现方法"><a href="#2-1-实现方法" class="headerlink" title="2.1 实现方法"></a>2.1 实现方法</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1.实现Runnable接口,重写run()方法</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyRunnable</span> <span class="keyword">implements</span> <span class="title class_">Runnable</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RunnableTest</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">//2.new *一个* 实现类对象</span></span><br><span class="line">        <span class="type">MyRunnable</span> <span class="variable">myRunnable</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyRunnable</span>();</span><br><span class="line">        <span class="comment">//3.使用实现类对象来new多个Thread对象</span></span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(myRunnable);</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(myRunnable);</span><br><span class="line">        <span class="comment">//4.用Thread对象调用start()方法</span></span><br><span class="line">        thread1.start();</span><br><span class="line">        thread2.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-2-与继承Thread类相比"><a href="#2-2-与继承Thread类相比" class="headerlink" title="2.2 与继承Thread类相比"></a>2.2 与继承Thread类相比</h4><ol>
-<li>没有单继承的局限性</li>
-<li>实现的方法更适合多个线程间共享数据(只有一个实现类对象,共享数据不需要static)</li>
+</li>
 </ol>
-<hr>
-<h3 id="3-Callable"><a href="#3-Callable" class="headerlink" title="3.Callable"></a>3.Callable<T></h3><h4 id="3-1-实现方法"><a href="#3-1-实现方法" class="headerlink" title="3.1 实现方法"></a>3.1 实现方法</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1.实现Callable&lt;T&gt;接口,重写T call()方法</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyCallable</span> <span class="keyword">implements</span> <span class="title class_">Callable</span>&lt;Integer&gt; &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Integer <span class="title function_">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        System.out.println(Thread.currentThread().getName());</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CallableTest</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">//2. new一个实现类对象</span></span><br><span class="line">        <span class="type">MyCallable</span> <span class="variable">myCallable</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyCallable</span>();</span><br><span class="line">        <span class="comment">//3. new一个FutureTask对象用来接收返回结果</span></span><br><span class="line">        FutureTask&lt;Integer&gt; futureTask = <span class="keyword">new</span> <span class="title class_">FutureTask</span>&lt;&gt;(myCallable);</span><br><span class="line">        <span class="comment">//4. 使用实现类对象来new多个Thread对象,然后调用start()方法</span></span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(futureTask);</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(futureTask);</span><br><span class="line">        thread1.start();<span class="comment">//执行线程</span></span><br><span class="line">        thread2.start();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//5. 使用futureTask.get()获得返回结果</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">Integer</span> <span class="variable">o</span> <span class="operator">=</span> futureTask.get();    <span class="comment">//获取结果</span></span><br><span class="line">            System.out.println(o);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ExecutionException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-2-memo"><a href="#3-2-memo" class="headerlink" title="3.2 memo"></a>3.2 memo</h4><hr>
-<h3 id="4-线程池"><a href="#4-线程池" class="headerlink" title="4.线程池"></a>4.线程池</h3><h4 id="4-1-实现方法"><a href="#4-1-实现方法" class="headerlink" title="4.1 实现方法"></a>4.1 实现方法</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ExecutorsTest</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ExecutionException, InterruptedException &#123;</span><br><span class="line">        <span class="comment">//1. 用工厂方法创建线程池</span></span><br><span class="line">        <span class="type">ThreadPoolExecutor</span> <span class="variable">executorService</span> <span class="operator">=</span> (ThreadPoolExecutor) Executors.newFixedThreadPool(<span class="number">10</span>);</span><br><span class="line">        <span class="comment">//2.1 对于Runnable,使用execute()</span></span><br><span class="line">        executorService.execute(<span class="keyword">new</span> <span class="title class_">MyRunnable</span>());</span><br><span class="line">        <span class="comment">//2.2 对于Callable,使用submit来获得</span></span><br><span class="line">        <span class="type">Future</span> <span class="variable">future</span> <span class="operator">=</span> executorService.submit(<span class="keyword">new</span> <span class="title class_">MyCallAble</span>());</span><br><span class="line">        <span class="type">Object</span> <span class="variable">o</span> <span class="operator">=</span> future.get();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="3-2-memo-1"><a href="#3-2-memo-1" class="headerlink" title="3.2 memo"></a>3.2 memo</h4><h2 id="B-方法"><a href="#B-方法" class="headerlink" title="B.方法"></a>B.方法</h2><h3 id="1-常用方法"><a href="#1-常用方法" class="headerlink" title="1.常用方法"></a>1.常用方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * yield(),释放cpu的执行权,让别的线程执行(但也可能会立即再次抢到执行权)</span></span><br><span class="line"><span class="comment"> * b.start();b.join();,在当前线程中加入b线程,需要等b线程跑完,当前线程才能继续跑,当前线程处于阻塞状态,InterruptedException</span></span><br><span class="line"><span class="comment"> * stop(),已过时,停止线程</span></span><br><span class="line"><span class="comment"> * sleep(long millstime),休眠,当前线程处于阻塞状态,但要注意这个方法是一个静态方法,主要看在哪里调用,而不是看谁调用,会使当前线程休眠</span></span><br><span class="line"><span class="comment"> * isAlive(),判断run()函数是否跑完,可以和stop结合使用</span></span><br><span class="line"><span class="comment"> * setPriority(),0~10,设置优先级只是提高概率,不是一定会优先执行,因此没什么用</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="4-守护线程"><a href="#4-守护线程" class="headerlink" title="4. 守护线程"></a>4. 守护线程</h3><ul>
-<li>线程分为用户线程(默认)和守护线程</li>
-<li>在start之前使用thread.setDaemon(true)来把一个用户线程变成一个守护线程</li>
-<li>Java垃圾回收就是一个守护线程</li>
-<li>若JVM都是守护线程时,当前JVM退出<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">T07_Shouhuxiancheng</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">DaemonThread</span> <span class="variable">daemonThread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DaemonThread</span>();</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(daemonThread);</span><br><span class="line">        t1.setDaemon(<span class="literal">true</span>);<span class="comment">//这样主线程结束后,这个守护线程也会立即结束</span></span><br><span class="line">        t1.start();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">3000</span>);<span class="comment">//主线程3秒后结束,守护线程也会跟着结束</span></span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;程序结束&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</li>
+<li>Servlet项目的现状<ol>
+<li>DAO依赖于Entity</li>
+<li>Service依赖于DAO</li>
+<li>Servlet依赖于Service</li>
+</ol>
+</li>
+</ol>
+<h2 id="面向抽象的发展过程LOL的例子"><a href="#面向抽象的发展过程LOL的例子" class="headerlink" title="面向抽象的发展过程LOL的例子"></a>面向抽象的发展过程LOL的例子</h2><ol>
+<li>第一种:最难以维护的写法<ol>
+<li>有<code>一个英雄类</code>,D,有一个方法r()</li>
+<li>mian:玩家输入英雄姓名,接收输入,用<code>switch判断</code>来<code>new特定的对象</code>,再调用技能方法<ul>
+<li>switch意味着<code>每次增加新英雄</code>都需要修改代码,这不符合开闭原则 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span>(name)&#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&quot;Diana&quot;</span>:</span><br><span class="line">        <span class="type">Diana</span> <span class="variable">diana</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Diana</span>();</span><br><span class="line">        diana.r();<span class="comment">//每个分支都要有一个方法的调用</span></span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">        <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
-<h4 id="3-线程的生命周期"><a href="#3-线程的生命周期" class="headerlink" title="3.线程的生命周期"></a>3.线程的生命周期</h4><ul>
-<li>新建</li>
-<li>就绪</li>
-<li>运行</li>
-<li>阻塞</li>
-<li>死亡<br><img src="/img.png" alt="img.png"></li>
+</li>
+<li><code>结论1:</code>面向对象就是做两件事情:<ol>
+<li>实例化对象</li>
+<li>调用对象的方法</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>第二种:使用interface统一方法的调用<ol>
+<li>创建一个<code>接口ISkill</code>,让其他英雄类都<code>实现这个接口</code></li>
+<li>接口拥有qwer方法</li>
+<li>main:<ol>
+<li>先定义一个<code>ISkill iSkill;</code></li>
+<li>用<code>switch判断</code>来<code>iSkill = new D()</code>实例化iSkill,调用方法统一为<code>iSkill.r()</code> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ISkill iSkill;</span><br><span class="line"><span class="keyword">switch</span>(name)&#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&quot;Diana&quot;</span>:</span><br><span class="line">        iSkill = <span class="keyword">new</span> <span class="title class_">Diana</span>();</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">        <span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line">iSkill.r()<span class="comment">//接口统一了方法的调用</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><code>结论2:</code>单纯的interface可以统一方法的调用,但是不能统一对象的实例化</li>
+</ol>
+</li>
+<li>第三种:工厂模式<ol>
+<li><code>结论3:</code>如果想让一段代码稳定,那就不能让代码中出现new关键字<ul>
+<li>也就是说一段代码如果想稳定,就<code>不应该负责对象的实例化工作</code></li>
 </ul>
+</li>
+<li>改法<ol>
+<li>新增一个工厂类<code>HeroFactory</code>,给一个静态方法<code>getHero()</code></li>
+<li>把<code>ISkill</code>和<code>switch</code>的代码复制到getHero()里面</li>
+<li>现在main()方法稳定了 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ISkill</span> <span class="variable">iSkill</span> <span class="operator">=</span> HeroFactory.getHero(name);</span><br><span class="line">iSkill.r()</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li>之后再新增英雄的时候,main方法里面的代码不需要再更改了<ul>
+<li>可以看做<code>main()</code>实现了OCP</li>
+<li>但是<code>Factory</code>里面的代码还是需要更改</li>
+</ul>
+</li>
+<li><code>结论4:</code> 变化只能被转移,不可能被消除<ul>
+<li>代码中总是存在不稳定,稳定是相对的,我们需要把不稳定的代码隔离,来确保其他方法是相对稳定的</li>
+<li>把所有的变化集中到一个大工厂里面,负责项目中所有对象的生成时,可以视做稳定</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>第四种: 使用反射消除new<ol>
+<li>使用反射,把用户的<code>输入</code>直接转换成<code>对象</code> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ISkill iSkill;</span><br><span class="line"><span class="comment">//forName拿到元类,name必须是类名</span></span><br><span class="line">Class&lt;?&gt; cla = Class.forName(name);</span><br><span class="line"><span class="comment">//创建元类的对象,但这个方法可能已经被废弃了</span></span><br><span class="line"><span class="comment">//clazz.getDeclaredConstructor().newInstance();</span></span><br><span class="line"><span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span> cla.newInstance();</span><br><span class="line"><span class="comment">//转型成ISkill</span></span><br><span class="line"><span class="keyword">return</span> (ISkill)obj;</span><br></pre></td></tr></table></figure></li>
+<li>相当于用户直接传递一个对象给我们,这样代码就稳定了<ul>
+<li>之前JDBC的Connect的获取方法也是反射</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h2><ol>
+<li>Spring的底层的确是反射和工厂模式,不过更智能,按Spring写出的代码可以视作实现了OCP</li>
+<li>自定义一个BeanFactory <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 之前直接new,会产生依赖问题,然后重复创建还会产生多个实例</span></span><br><span class="line"><span class="comment">     * Spring用的也是map(集合),一个IOC容器+(XML或注解)+反射</span></span><br><span class="line"><span class="comment">     * 实现控制权的反转</span></span><br><span class="line"><span class="comment">     * 启动时初始化这个Map(集合)来初始化实例</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BeanFactory</span> &#123;</span><br><span class="line">    <span class="comment">//用于读取配置文件</span></span><br><span class="line">    <span class="keyword">static</span> <span class="type">Properties</span> <span class="variable">prop</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Properties</span>();</span><br><span class="line">    <span class="comment">//这就是一个IOC容器</span></span><br><span class="line">    <span class="keyword">static</span> HashMap&lt;String,Object&gt; hashMap = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span>&#123;</span><br><span class="line">        <span class="type">InputStream</span> <span class="variable">is</span> <span class="operator">=</span> BeanFactory.class.getClassLoader().getResourceAsStream(<span class="string">&quot;beans.Properties&quot;</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            prop.load(is);</span><br><span class="line">            <span class="comment">/**</span></span><br><span class="line"><span class="comment">             * 把K和对象放进Map</span></span><br><span class="line"><span class="comment">             */</span></span><br><span class="line">            Enumeration&lt;?&gt; names = prop.propertyNames();<span class="comment">//获取所有的key</span></span><br><span class="line">            <span class="keyword">while</span>(names.hasMoreElements())&#123;</span><br><span class="line">                <span class="type">String</span> <span class="variable">beanName</span> <span class="operator">=</span> (String) names.nextElement();</span><br><span class="line">                <span class="type">String</span> <span class="variable">beanPath</span> <span class="operator">=</span> prop.getProperty(beanName);</span><br><span class="line">                hashMap.put(beanName, Class.forName(beanPath).newInstance());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title function_">getBean</span><span class="params">(String beanName)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> hashMap.get(beanName);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>有了这个工厂之后<ol>
+<li>这样即使删掉EmpService,编译时不报错,运行时报错,降低了耦合 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">EmpController</span> &#123;</span><br><span class="line">    <span class="comment">//EmpService service = new EmpServiceImpl();</span></span><br><span class="line">    <span class="type">EmpService</span> <span class="variable">service</span> <span class="operator">=</span> (EmpService) BeanFactory.getBean(<span class="string">&quot;empService&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li>Spring的使用方法:<ol>
+<li>创建容器对象ClassPathXmlApplicationContext</li>
+<li>act.getBean(“XXX”) <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//JUNIT5的复合注解</span></span><br><span class="line"><span class="meta">@SpringJUnitConfig(locations = &quot;classpath:beans.xml&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SpringTest</span> &#123;</span><br><span class="line">    <span class="comment">//1. 用Spring之前</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test1</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">//手动new一个对象</span></span><br><span class="line">        <span class="type">HelloService</span> <span class="variable">hs</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HelloService</span>();</span><br><span class="line">        hs.say();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//2.用Spring之后</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test2</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">//这里使用的是xml文件,记住ClassPathXmlApplicationContext即可,这是Spring的容器类</span></span><br><span class="line">        <span class="type">ClassPathXmlApplicationContext</span> <span class="variable">act</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ClassPathXmlApplicationContext</span>(<span class="string">&quot;beans.xml&quot;</span>);</span><br><span class="line">        <span class="type">AccountService</span> <span class="variable">as1</span> <span class="operator">=</span> (AccountService) act.getBean(<span class="string">&quot;as1&quot;</span>);</span><br><span class="line">        System.out.println(as1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>现在虽然实现了OCP和IoC,但使用起来很麻烦,因此引入DI的概念<ol>
+<li>用于IoC的注解<ol>
+<li>@Component</li>
+<li>@Repository, DAO</li>
+<li>@Service</li>
+<li>@Controller</li>
+</ol>
+</li>
+<li>用于注入数据(DI)的注解<ol>
+<li>@Autowired<ul>
+<li><code>Spring提供的</code>注解,默认是<code>按类型</code>注入,且可以和Spring其他注解结合使用</li>
+<li>括号里填写truefalse,默认和true表示依赖检查,没有的话会报错</li>
+<li>假如现在一个接口有两个实现类,(注解打在<code>接口实例(EmpDao)的头上</code>)Autowired会因为不知道注入哪个而报错</li>
+</ul>
+<ol>
+<li>可以使用@Primary提高某个实现类的优先级</li>
+<li>可以在@Autowired下面加个<code>Qualifer(&quot;empDaoImpl2&quot;)</code>来改成<code>按名称</code>注入</li>
+</ol>
+</li>
+<li>@Resource<ul>
+<li><code>Java提供的</code>注解,默认<code>按名称</code>注入</li>
+<li>没有名称时按类型</li>
+<li>类型找不到或者多个类型时会报错</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>加了注解之后,Spring怎么知道有哪些类上有注解?<ol start="2">
+<li>简洁操作</li>
+</ol>
+<ul>
+<li>输入<code>&lt;co</code>,选择<code>componet-scan</code></li>
+<li>会自动补全上面<code>beans</code>标签缺的东西 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 从这个类的子类开始扫描有注解的类 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">&quot;com.gsd&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
 
       
 
@@ -253,7 +337,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Spring</a>
         		</li>
       		
 		</ul>
@@ -265,7 +349,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        			<a href="/categories/JAVA//" class="article-tag-list-link color5">JAVA</a>
         		</li>
       		
 		</ul>
@@ -320,7 +404,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2023/08/19/7.%E5%A4%9A%E7%BA%BF%E7%A8%8B/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2024/04/21/24.%E5%A6%82%E4%BD%95%E5%86%99%E5%87%BA%E5%8F%AF%E7%BB%B4%E6%8A%A4%E6%80%A7%E5%BC%BA%E7%9A%84%E4%BB%A3%E7%A0%81,Spring%E7%9A%84%E4%BD%BF%E7%94%A8/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -334,18 +418,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2023/08/19/4.%E5%B8%B8%E7%94%A8%E7%B1%BB/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2024/04/21/26.SpringMVC%E6%9E%84%E7%AD%91%E6%89%8B%E9%A1%BA/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          常用类：String，Date，Comparable
+          SpringMVC构筑手顺
         
       </div>
     </a>
   
   
-    <a href="/2023/08/19/8.%E5%90%8C%E6%AD%A5%E4%B8%8E%E7%BA%BF%E7%A8%8B%E9%80%9A%E8%AE%AF/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">同步与线程通讯</div>
+    <a href="/2024/04/21/23.JDBC%E5%85%A5%E9%97%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JDBC入门</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -372,7 +456,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">多线程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#A-%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA%E4%B8%8E%E4%BD%BF%E7%94%A8-4%E7%A7%8D"><span class="toc-number">1.1.</span> <span class="toc-text">A.线程的创建与使用(4种)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Thread"><span class="toc-number">1.1.1.</span> <span class="toc-text">1. Thread</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">1.1 实现方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-memo"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">1.2 memo</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Runnable"><span class="toc-number">1.1.2.</span> <span class="toc-text">2. Runnable</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">2.1 实现方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-%E4%B8%8E%E7%BB%A7%E6%89%BFThread%E7%B1%BB%E7%9B%B8%E6%AF%94"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">2.2 与继承Thread类相比</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Callable"><span class="toc-number">1.1.3.</span> <span class="toc-text">3.Callable</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.3.1.</span> <span class="toc-text">3.1 实现方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-memo"><span class="toc-number">1.1.3.2.</span> <span class="toc-text">3.2 memo</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-number">1.1.4.</span> <span class="toc-text">4.线程池</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.4.1.</span> <span class="toc-text">4.1 实现方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-memo-1"><span class="toc-number">1.1.4.2.</span> <span class="toc-text">3.2 memo</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#B-%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text">B.方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.常用方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%AE%88%E6%8A%A4%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text">4. 守护线程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">3.线程的生命周期</span></a></li></ol></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E9%97%AD%E5%8E%9F%E5%88%99"><span class="toc-number">1.</span> <span class="toc-text">开闭原则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%A2%E5%90%91%E6%8A%BD%E8%B1%A1%E7%9A%84%E5%8F%91%E5%B1%95%E8%BF%87%E7%A8%8BLOL%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="toc-number">2.</span> <span class="toc-text">面向抽象的发展过程LOL的例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring"><span class="toc-number">3.</span> <span class="toc-text">Spring</span></a></li></ol>
                     </div>
                 </span>
             </div>

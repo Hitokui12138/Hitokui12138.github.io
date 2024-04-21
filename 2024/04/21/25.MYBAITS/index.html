@@ -6,22 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>多线程 | Hitokui&#39;s Blog</title>
+  <title>MYBAITS | Hitokui&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="多线程 线程的创建方法 线程的常用方法  A.线程的创建与使用(4种) 继承Thread类(1.5之前的方法) 实现Runnable接口(1.5之前的方法) 实现Callable接口(1.5之后) 线程池静态方法">
+  <meta name="description" content="从JDBC到MyBaits MyBaits入门 MyBatis和Spring结合">
 <meta property="og:type" content="article">
-<meta property="og:title" content="多线程">
-<meta property="og:url" content="http://example.com/2023/08/19/7.%E5%A4%9A%E7%BA%BF%E7%A8%8B/index.html">
+<meta property="og:title" content="MYBAITS">
+<meta property="og:url" content="http://example.com/2024/04/21/25.MYBAITS/index.html">
 <meta property="og:site_name" content="Hitokui&#39;s Blog">
-<meta property="og:description" content="多线程 线程的创建方法 线程的常用方法  A.线程的创建与使用(4种) 继承Thread类(1.5之前的方法) 实现Runnable接口(1.5之前的方法) 实现Callable接口(1.5之后) 线程池静态方法">
+<meta property="og:description" content="从JDBC到MyBaits MyBaits入门 MyBatis和Spring结合">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/img.png">
-<meta property="article:published_time" content="2023-08-19T10:29:30.000Z">
-<meta property="article:modified_time" content="2024-03-03T02:52:25.623Z">
+<meta property="article:published_time" content="2024-04-21T08:03:30.000Z">
+<meta property="article:modified_time" content="2024-04-21T08:34:25.997Z">
 <meta property="article:author" content="Hitokui">
-<meta property="article:tag" content="Java SE">
+<meta property="article:tag" content="Spring">
+<meta property="article:tag" content="MyBaits">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/img.png">
   
     <link rel="alternative" href="/atom.xml" title="Hitokui&#39;s Blog" type="application/atom+xml">
   
@@ -174,72 +173,134 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-7.多线程" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-25.MYBAITS" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      多线程
+      MYBAITS
     </h1>
   
 
         
-        <a href="/2023/08/19/7.%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="archive-article-date">
-  	<time datetime="2023-08-19T10:29:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-19</time>
+        <a href="/2024/04/21/25.MYBAITS/" class="archive-article-date">
+  	<time datetime="2024-04-21T08:03:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-04-21</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h1><ul>
-<li>线程的创建方法</li>
-<li>线程的常用方法</li>
+        <ul>
+<li>从JDBC到MyBaits</li>
+<li>MyBaits入门</li>
+<li>MyBatis和Spring结合<span id="more"></span></li>
 </ul>
-<h2 id="A-线程的创建与使用-4种"><a href="#A-线程的创建与使用-4种" class="headerlink" title="A.线程的创建与使用(4种)"></a>A.线程的创建与使用(4种)</h2><ol>
-<li>继承Thread类(1.5之前的方法)</li>
-<li>实现Runnable接口(1.5之前的方法)</li>
-<li>实现Callable接口(1.5之后)</li>
-<li>线程池静态方法</li>
+<h1 id="从JDBC到MyBaits"><a href="#从JDBC到MyBaits" class="headerlink" title="从JDBC到MyBaits"></a>从JDBC到MyBaits</h1><ol>
+<li>jdbc的缺点<ul>
+<li>把对象的属性转成字段,和把表的字段转成对象属性的过程是<code>手动的</code>很麻烦</li>
+<li>每个方法都要trycatch,代码冗余</li>
+</ul>
+</li>
+<li>MYBAITS<ol>
+<li>是一个半自动的ORM框架(需要自己写sql),还有另一种jpa规范是全自动ORM<ul>
+<li>Object Relation Mapping,通过<code>映射文件</code>,配置<code>对象和表</code>,<code>属性和字段</code>之间的关系</li>
+<li><code>自动</code>实现sql和对象的转换,通过ORM实现持久化技术</li>
+</ul>
+</li>
+<li>底层也是jdbc,用来替代DAO层,持久层技术框架<ul>
+<li>持久化:把对象保存到硬盘和数据库,或者把文件,数据库转换到内存的过程</li>
+</ul>
+</li>
 </ol>
-<span id="more"></span>
-
-<h3 id="1-Thread"><a href="#1-Thread" class="headerlink" title="1. Thread"></a>1. Thread</h3><h4 id="1-1-实现方法"><a href="#1-1-实现方法" class="headerlink" title="1.1 实现方法"></a>1.1 实现方法</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1.继承Thread,重写run()</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyThread</span> <span class="keyword">extends</span> <span class="title class_">Thread</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ThreadTest</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">//2.new *多个* 子类对象</span></span><br><span class="line">        <span class="type">MyThread</span> <span class="variable">myThread1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyThread</span>();</span><br><span class="line">        <span class="type">MyThread</span> <span class="variable">myThread2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyThread</span>();</span><br><span class="line">        <span class="comment">//3.用子类对象调用start()方法</span></span><br><span class="line">        myThread1.start();</span><br><span class="line">        myThread2.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="1-2-memo"><a href="#1-2-memo" class="headerlink" title="1.2 memo"></a>1.2 memo</h4><ul>
-<li>start()方法能启动一个线程并调用run()方法</li>
-<li>不能直接调用run(),因为会变成普通方法,不启动多线程</li>
-</ul>
-<hr>
-<h3 id="2-Runnable"><a href="#2-Runnable" class="headerlink" title="2. Runnable"></a>2. Runnable</h3><h4 id="2-1-实现方法"><a href="#2-1-实现方法" class="headerlink" title="2.1 实现方法"></a>2.1 实现方法</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1.实现Runnable接口,重写run()方法</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyRunnable</span> <span class="keyword">implements</span> <span class="title class_">Runnable</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RunnableTest</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">//2.new *一个* 实现类对象</span></span><br><span class="line">        <span class="type">MyRunnable</span> <span class="variable">myRunnable</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyRunnable</span>();</span><br><span class="line">        <span class="comment">//3.使用实现类对象来new多个Thread对象</span></span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(myRunnable);</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(myRunnable);</span><br><span class="line">        <span class="comment">//4.用Thread对象调用start()方法</span></span><br><span class="line">        thread1.start();</span><br><span class="line">        thread2.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-2-与继承Thread类相比"><a href="#2-2-与继承Thread类相比" class="headerlink" title="2.2 与继承Thread类相比"></a>2.2 与继承Thread类相比</h4><ol>
-<li>没有单继承的局限性</li>
-<li>实现的方法更适合多个线程间共享数据(只有一个实现类对象,共享数据不需要static)</li>
+</li>
+<li>MyBaits入门<ol>
+<li>配置 <ol>
+<li>导入包</li>
+<li>新建MyBaties的配置文件,<code>mybatis-config.xml</code>,参考官网<ol>
+<li>定义数据源</li>
+<li>定义Mapper文件位置</li>
+<li>建议直接看与Spring整合的文档</li>
 </ol>
-<hr>
-<h3 id="3-Callable"><a href="#3-Callable" class="headerlink" title="3.Callable"></a>3.Callable<T></h3><h4 id="3-1-实现方法"><a href="#3-1-实现方法" class="headerlink" title="3.1 实现方法"></a>3.1 实现方法</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1.实现Callable&lt;T&gt;接口,重写T call()方法</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyCallable</span> <span class="keyword">implements</span> <span class="title class_">Callable</span>&lt;Integer&gt; &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Integer <span class="title function_">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        System.out.println(Thread.currentThread().getName());</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CallableTest</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">//2. new一个实现类对象</span></span><br><span class="line">        <span class="type">MyCallable</span> <span class="variable">myCallable</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyCallable</span>();</span><br><span class="line">        <span class="comment">//3. new一个FutureTask对象用来接收返回结果</span></span><br><span class="line">        FutureTask&lt;Integer&gt; futureTask = <span class="keyword">new</span> <span class="title class_">FutureTask</span>&lt;&gt;(myCallable);</span><br><span class="line">        <span class="comment">//4. 使用实现类对象来new多个Thread对象,然后调用start()方法</span></span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(futureTask);</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(futureTask);</span><br><span class="line">        thread1.start();<span class="comment">//执行线程</span></span><br><span class="line">        thread2.start();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//5. 使用futureTask.get()获得返回结果</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">Integer</span> <span class="variable">o</span> <span class="operator">=</span> futureTask.get();    <span class="comment">//获取结果</span></span><br><span class="line">            System.out.println(o);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ExecutionException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-2-memo"><a href="#3-2-memo" class="headerlink" title="3.2 memo"></a>3.2 memo</h4><hr>
-<h3 id="4-线程池"><a href="#4-线程池" class="headerlink" title="4.线程池"></a>4.线程池</h3><h4 id="4-1-实现方法"><a href="#4-1-实现方法" class="headerlink" title="4.1 实现方法"></a>4.1 实现方法</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ExecutorsTest</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ExecutionException, InterruptedException &#123;</span><br><span class="line">        <span class="comment">//1. 用工厂方法创建线程池</span></span><br><span class="line">        <span class="type">ThreadPoolExecutor</span> <span class="variable">executorService</span> <span class="operator">=</span> (ThreadPoolExecutor) Executors.newFixedThreadPool(<span class="number">10</span>);</span><br><span class="line">        <span class="comment">//2.1 对于Runnable,使用execute()</span></span><br><span class="line">        executorService.execute(<span class="keyword">new</span> <span class="title class_">MyRunnable</span>());</span><br><span class="line">        <span class="comment">//2.2 对于Callable,使用submit来获得</span></span><br><span class="line">        <span class="type">Future</span> <span class="variable">future</span> <span class="operator">=</span> executorService.submit(<span class="keyword">new</span> <span class="title class_">MyCallAble</span>());</span><br><span class="line">        <span class="type">Object</span> <span class="variable">o</span> <span class="operator">=</span> future.get();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="3-2-memo-1"><a href="#3-2-memo-1" class="headerlink" title="3.2 memo"></a>3.2 memo</h4><h2 id="B-方法"><a href="#B-方法" class="headerlink" title="B.方法"></a>B.方法</h2><h3 id="1-常用方法"><a href="#1-常用方法" class="headerlink" title="1.常用方法"></a>1.常用方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * yield(),释放cpu的执行权,让别的线程执行(但也可能会立即再次抢到执行权)</span></span><br><span class="line"><span class="comment"> * b.start();b.join();,在当前线程中加入b线程,需要等b线程跑完,当前线程才能继续跑,当前线程处于阻塞状态,InterruptedException</span></span><br><span class="line"><span class="comment"> * stop(),已过时,停止线程</span></span><br><span class="line"><span class="comment"> * sleep(long millstime),休眠,当前线程处于阻塞状态,但要注意这个方法是一个静态方法,主要看在哪里调用,而不是看谁调用,会使当前线程休眠</span></span><br><span class="line"><span class="comment"> * isAlive(),判断run()函数是否跑完,可以和stop结合使用</span></span><br><span class="line"><span class="comment"> * setPriority(),0~10,设置优先级只是提高概率,不是一定会优先执行,因此没什么用</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="4-守护线程"><a href="#4-守护线程" class="headerlink" title="4. 守护线程"></a>4. 守护线程</h3><ul>
-<li>线程分为用户线程(默认)和守护线程</li>
-<li>在start之前使用thread.setDaemon(true)来把一个用户线程变成一个守护线程</li>
-<li>Java垃圾回收就是一个守护线程</li>
-<li>若JVM都是守护线程时,当前JVM退出<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">T07_Shouhuxiancheng</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">DaemonThread</span> <span class="variable">daemonThread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DaemonThread</span>();</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(daemonThread);</span><br><span class="line">        t1.setDaemon(<span class="literal">true</span>);<span class="comment">//这样主线程结束后,这个守护线程也会立即结束</span></span><br><span class="line">        t1.start();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">3000</span>);<span class="comment">//主线程3秒后结束,守护线程也会跟着结束</span></span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;程序结束&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</li>
+<li>创建mapper文件<ol>
+<li><code>&lt;mapper namespace=&quot;com.gsd.dao.empDao&quot;&gt;</code>,相当于是一个类</li>
+<li><code>&lt;insert&gt;</code>,<code>&lt;select&gt;</code>,每个标签都相当于是一个方法<ul>
+<li>id: 唯一的方法名</li>
+<li>parameterType&#x3D;”com.com.gsd.entity.Emp”,可以直接传进去一个对象</li>
+<li>OGNL表达式 #{get方法}，底层使用PreparedStatement接口，先生成？，再替换 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">&quot;com.gsd.dao.EmpDao&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- parameterType表示参数类型,如果是int之类的可以不写 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">&quot;addEmp&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;com.gsd.entity.Emp&quot;</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--   OGNL表达式    --&gt;</span></span><br><span class="line">        INSERT INTO emp VALUES (0, #&#123;ename&#125;, #&#123;job&#125;, #&#123;mgr&#125;, now(), #&#123;sal&#125;, #&#123;comm&#125;, #&#123;deptno&#125;, 1)</span><br><span class="line">    <span class="tag">&lt;/<span class="name">insert</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 写一个resultType表示返回类型 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findAll&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;com.gsd.entity.Emp&quot;</span>&gt;</span></span><br><span class="line">        select empno,ename,job,mgr from emp</span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
 </ul>
-<h4 id="3-线程的生命周期"><a href="#3-线程的生命周期" class="headerlink" title="3.线程的生命周期"></a>3.线程的生命周期</h4><ul>
-<li>新建</li>
-<li>就绪</li>
-<li>运行</li>
-<li>阻塞</li>
-<li>死亡<br><img src="/img.png" alt="img.png"></li>
+</li>
+<li>总结:如何让mapper知道要生成哪个方法?<ol>
+<li>让mapper的namespace指向接口 <code>&lt;mapper namespace=&quot;com.com.gsd.dao.EmpDao&quot;&gt;</code></li>
+<li>接口的方法名和参数name保持一致</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>在项目中使用 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">EmpTest</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> SqlSession sqlSession;</span><br><span class="line">    <span class="comment">//Junit的注解,在其他测试用例之前执行这个</span></span><br><span class="line">    <span class="meta">@BeforeAll</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">before</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;===========INIT============&quot;</span>);</span><br><span class="line">        <span class="comment">//1.获取Config配置文件(org.apache.ibatis.io.Resources)</span></span><br><span class="line">        <span class="type">InputStream</span> <span class="variable">is</span> <span class="operator">=</span> Resources.getResourceAsStream(<span class="string">&quot;mybatis-config.xml&quot;</span>);</span><br><span class="line">        <span class="comment">//2.创建sqlSessionFactory（myBatis核心类）</span></span><br><span class="line">        <span class="type">SqlSessionFactory</span> <span class="variable">factory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SqlSessionFactoryBuilder</span>().build(is);</span><br><span class="line">        <span class="comment">//3.创建SqlSession （类似于Connection）</span></span><br><span class="line">        sqlSession = factory.openSession();<span class="comment">//注意：MyBatis默认是手动提交事务</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@AfterAll</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">close</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;===========END============&quot;</span>);</span><br><span class="line">        <span class="comment">//5.提交事务</span></span><br><span class="line">        sqlSession.commit();</span><br><span class="line">        <span class="comment">//6.关闭连接</span></span><br><span class="line">        sqlSession.close();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//4. 正式使用</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test4</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        List&lt;Emp&gt; empList = sqlSession.selectList(<span class="string">&quot;findAll&quot;</span>);<span class="comment">//mapper文件里标明的ID</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        sqlSession.selectOne(&quot;detail&quot;,7369);</span></span><br><span class="line"><span class="comment">        sqlSession.insert(&quot;updateEmp&quot;, emp);等等</span></span><br><span class="line"><span class="comment">        insert,update,delete可以混用</span></span><br><span class="line"><span class="comment">        可以直接传对象进去</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        System.out.println(empList);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+<h2 id="MyBatis和Spring结合"><a href="#MyBatis和Spring结合" class="headerlink" title="MyBatis和Spring结合"></a>MyBatis和Spring结合</h2><ol>
+<li>现在的问题:<ul>
+<li>去掉MyBatis包后都会报错,耦合</li>
+<li>一次只能连一个链接</li>
 </ul>
+</li>
+<li>主要是学习用,用到很多设计模式<ol>
+<li>SqlSessionFactory, 工厂模式</li>
+<li>build(),建造者模式</li>
+<li>mapper代理模式</li>
+</ol>
+</li>
+<li>用Spring的思路:</li>
+</ol>
+<ul>
+<li><code>myBatis提供</code>了和Spring整合的文档,看一下文档<code>https://mybatis.org/spring/</code><ol>
+<li>应该由Spring创建<code>SqlSessionFactory</code><ul>
+<li>但是SqlSessionFactory是个<code>接口</code>,既没有构造器,也没有Set方法</li>
+<li>整合包提供了一个<code>SqlSessionFactoryBean</code>类,可以看一下这个实现方法 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SqlSessionFactoryBean</span> <span class="keyword">implements</span> <span class="title class_">FactoryBean</span>&lt;SqlSessionFactory&gt;&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">        用Ctrl+F12看一下里面的方法</span></span><br><span class="line"><span class="comment">        里面有各种set方法</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<ol start="4">
+<li>具体<ol>
+<li>导入<code>整合包MyBatis-Spring</code>和<code>Spring</code>需要的包和<code>spring-jdbc数据源包</code></li>
+<li>新建配置文件beans.xml,<ul>
+<li>原来的mybatis-config.xml定义了两个值,<code>数据源</code>和<code>mapper文件</code></li>
+</ul>
+<ol>
+<li>类就是那个整合包提供的实现类,注意这种第三方包提供的bean的id不能随便写<ul>
+<li>去掉后面的Bean,首字母小写</li>
+</ul>
+</li>
+<li>关于数据源,既可以用Druid,也可以用Spring自带的数据源<ul>
+<li>JAR包名叫<code>spring-jdbc</code>,不止数据源,还能管理事务等等</li>
+<li>类名叫DriverManagerDataSource,实现了DataSource接口</li>
+<li>关闭连接等操作都可以托管给Spring</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+ <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 核心类 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;sqlSessionFactory&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--    1.数据源（DataSource接口），可以用druid或者spring自带的数据源    --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;dataSource&quot;</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--    2.Mapper文件,value不会写可以参考官方文档    --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;mapperLocations&quot;</span> <span class="attr">value</span>=<span class="string">&quot;classpath*:mapper/*.xml&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 数据源 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;dataSource&quot;</span>  <span class="attr">class</span>=<span class="string">&quot;org.springframework.jdbc.datasource.DriverManagerDataSource&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driverClassName&quot;</span> <span class="attr">value</span>=<span class="string">&quot;com.mysql.cj.jdbc.Driver&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;url&quot;</span> <span class="attr">value</span>=<span class="string">&quot;jdbc:mysql://localhost:3306/myschool?serverTimezone=GMT<span class="symbol">&amp;amp;</span>useSSL=false&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span> <span class="attr">value</span>=<span class="string">&quot;root&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;admin&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>注册映射器<ul>
+<li>现在还有个问题是没有<code>sqlSession</code>托管给Spring了,就不能用<code>sqlSession.getMapper(EmpDao.class);</code>方法</li>
+<li>mybatis提供了一些方法,推荐使用注册映射器法</li>
+<li>DAO是接口,用代理对象实例化接口对象 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 方法1 MapperScanner 生成扫描器 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--  扫描value=&quot;com.gsd.dao&quot;该包下的接口，生成`代理对象` --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">&quot;org.mybatis.spring.mapper.MapperScannerConfigurer&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;basePackage&quot;</span> <span class="attr">value</span>=<span class="string">&quot;com.gsd.dao&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 方法2 推荐 直接发现映射器--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mybatis-spring:scan</span> <span class="attr">base-package</span>=<span class="string">&quot;com.gsd.dao&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
 
       
 
@@ -253,7 +314,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Spring</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">MyBaits</a>
         		</li>
       		
 		</ul>
@@ -265,7 +330,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        			<a href="/categories/JAVA//" class="article-tag-list-link color5">JAVA</a>
         		</li>
       		
 		</ul>
@@ -320,7 +385,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2023/08/19/7.%E5%A4%9A%E7%BA%BF%E7%A8%8B/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2024/04/21/25.MYBAITS/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -334,18 +399,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2023/08/19/4.%E5%B8%B8%E7%94%A8%E7%B1%BB/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          常用类：String，Date，Comparable
-        
-      </div>
-    </a>
   
-  
-    <a href="/2023/08/19/8.%E5%90%8C%E6%AD%A5%E4%B8%8E%E7%BA%BF%E7%A8%8B%E9%80%9A%E8%AE%AF/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">同步与线程通讯</div>
+    <a href="/2024/04/21/26.SpringMVC%E6%9E%84%E7%AD%91%E6%89%8B%E9%A1%BA/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">SpringMVC构筑手顺</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -372,7 +428,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">多线程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#A-%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA%E4%B8%8E%E4%BD%BF%E7%94%A8-4%E7%A7%8D"><span class="toc-number">1.1.</span> <span class="toc-text">A.线程的创建与使用(4种)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Thread"><span class="toc-number">1.1.1.</span> <span class="toc-text">1. Thread</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">1.1 实现方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-memo"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">1.2 memo</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Runnable"><span class="toc-number">1.1.2.</span> <span class="toc-text">2. Runnable</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">2.1 实现方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-%E4%B8%8E%E7%BB%A7%E6%89%BFThread%E7%B1%BB%E7%9B%B8%E6%AF%94"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">2.2 与继承Thread类相比</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Callable"><span class="toc-number">1.1.3.</span> <span class="toc-text">3.Callable</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.3.1.</span> <span class="toc-text">3.1 实现方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-memo"><span class="toc-number">1.1.3.2.</span> <span class="toc-text">3.2 memo</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-number">1.1.4.</span> <span class="toc-text">4.线程池</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.4.1.</span> <span class="toc-text">4.1 实现方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-memo-1"><span class="toc-number">1.1.4.2.</span> <span class="toc-text">3.2 memo</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#B-%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text">B.方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.常用方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%AE%88%E6%8A%A4%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text">4. 守护线程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">3.线程的生命周期</span></a></li></ol></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8EJDBC%E5%88%B0MyBaits"><span class="toc-number">1.</span> <span class="toc-text">从JDBC到MyBaits</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MyBatis%E5%92%8CSpring%E7%BB%93%E5%90%88"><span class="toc-number">1.1.</span> <span class="toc-text">MyBatis和Spring结合</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
