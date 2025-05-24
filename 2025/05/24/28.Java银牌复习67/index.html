@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>数据库 2 | Hitokui&#39;s Blog</title>
+  <title>Java银牌复习67 | Hitokui&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="0815 连接,组合 子查询">
+  <meta name="description" content="インスタンスとメソッド クラスの継承、インタフェース、抽象クラス">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数据库 2">
-<meta property="og:url" content="http://example.com/2024/03/03/14.0815/index.html">
+<meta property="og:title" content="Java银牌复习67">
+<meta property="og:url" content="http://example.com/2025/05/24/28.Java%E9%93%B6%E7%89%8C%E5%A4%8D%E4%B9%A067/index.html">
 <meta property="og:site_name" content="Hitokui&#39;s Blog">
-<meta property="og:description" content="0815 连接,组合 子查询">
+<meta property="og:description" content="インスタンスとメソッド クラスの継承、インタフェース、抽象クラス">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-03-03T07:48:30.000Z">
-<meta property="article:modified_time" content="2024-03-03T07:49:45.705Z">
+<meta property="article:published_time" content="2025-05-24T06:39:28.000Z">
+<meta property="article:modified_time" content="2025-05-24T06:49:21.961Z">
 <meta property="article:author" content="Hitokui">
-<meta property="article:tag" content="MYSQL">
-<meta property="article:tag" content="Oracle">
+<meta property="article:tag" content="Java SE">
+<meta property="article:tag" content="Java Silver">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Hitokui&#39;s Blog" type="application/atom+xml">
@@ -72,7 +72,7 @@
 			</ul>
 		</nav>
 		<nav>
-			总文章数: 26
+			总文章数: 41
 		</nav>
 		<nav class="header-smart-menu">
     		
@@ -173,120 +173,116 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-14.0815" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-28.Java银牌复习67" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      数据库 2
+      Java银牌复习67
     </h1>
   
 
         
-        <a href="/2024/03/03/14.0815/" class="archive-article-date">
-  	<time datetime="2024-03-03T07:48:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-03-03</time>
+        <a href="/2025/05/24/28.Java%E9%93%B6%E7%89%8C%E5%A4%8D%E4%B9%A067/" class="archive-article-date">
+  	<time datetime="2025-05-24T06:39:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-05-24</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="0815"><a href="#0815" class="headerlink" title="0815"></a>0815</h1><ul>
-<li>连接,组合</li>
-<li>子查询<span id="more"></span></li>
+        <ul>
+<li>インスタンスとメソッド</li>
+<li>クラスの継承、インタフェース、抽象クラス<span id="more"></span></li>
 </ul>
-<h2 id="A-MYSQL与ORACLE"><a href="#A-MYSQL与ORACLE" class="headerlink" title="A. MYSQL与ORACLE"></a>A. MYSQL与ORACLE</h2><h3 id="1-连接"><a href="#1-连接" class="headerlink" title="1. 连接"></a>1. 连接</h3><ol>
-<li>笛卡尔积<ul>
-<li>第一个表的所有行和第二个表所有行发生关联(不合理)</li>
-<li>发生条件: 连接条件被省略,连接条件无效</li>
-<li>多表关联相当于在笛卡尔积的基础上进行过滤得到结果</li>
-</ul>
-</li>
-<li>内连<ul>
-<li>以下两种写法效果一样<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 第一种 等值连接</span></span><br><span class="line"><span class="keyword">SELECT</span> ename, e.deptno, dname</span><br><span class="line">    <span class="keyword">FROM</span> emp e, dept d</span><br><span class="line">    <span class="keyword">WHERE</span> e.deptno <span class="operator">=</span> d.deptno;</span><br><span class="line"><span class="comment">-- 第二种 [INNER] JOIN</span></span><br><span class="line"><span class="keyword">SELECT</span> empno, sal, loc, ename, dname</span><br><span class="line">    <span class="keyword">FROM</span> emp e</span><br><span class="line">    <span class="keyword">INNER</span> <span class="keyword">JOIN</span> dept d</span><br><span class="line">    <span class="keyword">ON</span> e.deptno <span class="operator">=</span> d.deptno;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li>外连<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 左外连</span></span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">OUTER</span> <span class="keyword">JOIN</span></span><br><span class="line"><span class="comment">-- 右外连</span></span><br><span class="line"><span class="keyword">RIGHT</span> <span class="keyword">OUTER</span> <span class="keyword">JOIN</span></span><br></pre></td></tr></table></figure></li>
-<li>全连<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 1. ORACLE: FULL JOIN</span></span><br><span class="line"><span class="comment">-- 2. MYSQL: UNION</span></span><br></pre></td></tr></table></figure></li>
-</ol>
-<hr>
-<h3 id="2-组合"><a href="#2-组合" class="headerlink" title="2.组合"></a>2.组合</h3><ol>
-<li>函数<ol>
-<li>单行函数,单行-&gt;单行<ul>
-<li>UPPER,SUBSTR,TRIM….</li>
-</ul>
-</li>
-<li>聚合函数,多行-&gt;单行,一共5个<ul>
-<li>MIN,MAX,SUM,AVG,COUNT</li>
-</ul>
-</li>
+<h1 id="6-对象与方法"><a href="#6-对象与方法" class="headerlink" title="6 对象与方法"></a>6 对象与方法</h1><ol>
+<li>static,初期化子,constructor的顺序<ol>
+<li>生成class, 先初始化static的变量</li>
+<li>外部调用new关键字试图生成对象</li>
+<li>先调用初期化子</li>
+<li>在调用对应的有参的constractor</li>
 </ol>
 </li>
-<li>MIN,MAX 任何数据都可以用</li>
-<li>SUM,AVG 只能用于数字类型<ol>
-<li>关于NULL <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- comm的14行中只有3行有值</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">AVG</span>(comm) <span class="keyword">FROM</span> emp; <span class="comment">-- 忽略NULL的值因此除以3</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">AVG</span>(NVL(comm,<span class="number">0</span>)) <span class="keyword">FROM</span> emp; <span class="comment">-- 除以14</span></span><br></pre></td></tr></table></figure></li>
-</ol>
-</li>
-<li>COUNT<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(<span class="operator">*</span>) <span class="keyword">FROM</span> emp;   <span class="comment">--14 ,不要写*,因为*是全盘扫描,建议写字段或者常数</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(<span class="number">1</span>) <span class="keyword">FROM</span> emp;   <span class="comment">--14 就写常数吧,如果写字段可能会忽略NULL的</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(<span class="keyword">ALL</span> mgr) <span class="keyword">FROM</span> emp; <span class="comment">--13 ,默认就是ALL,可以不写,如果有NULL的话就不会计算这一行了 </span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> mgr <span class="keyword">FROM</span> emp; <span class="comment">-- 带上NULL一共有7行  </span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(<span class="keyword">DISTINCT</span> mgr) <span class="keyword">FROM</span> emp;  <span class="comment">--6 ,DISTINCT之后NULL是不算的</span></span><br></pre></td></tr></table></figure></li>
-<li>GROUP BY的时机<ol>
-<li>分组之后,除了<code>分组的字段</code>和<code>聚合函数</code>之外的普通字段就不能写了<ol>
-<li>题中出现最大MAX最小MIN,平均AVG总和SUM,数量COUNT相关<code>聚合函数</code>的信息时,一定要用GROUP BY</li>
-<li><code>每个</code>后面的字段是分组对象,另外除了<code>分组的字段和聚合函数</code>之外,还需要取得<code>其他字段</code>时,这个字段也需要分租</li>
+<li>构造方法<ol>
+<li>不能有任何返回类型</li>
+<li>对于修饰子,<code>无限制</code></li>
+<li>如果想在调用构造方法,则只能在另一个构造方法里调用<ol>
+<li>只能使用this(),supper()调用</li>
+<li>且必须啊在第一行调用</li>
 </ol>
 </li>
 </ol>
 </li>
-<li>WHERE 中为什么不能使用聚合函数?<ul>
-<li>SQL执行顺序<ol>
-<li>FROM 选择表</li>
-<li>JOIN ON,先JOIN后WHERE</li>
-<li>WHERE 对每行筛选</li>
-<li>GROUP BY 对筛选结果进行分组</li>
-<li>HAVING 对每组筛选</li>
-<li>SELECT 选取结果</li>
-<li>ORDER BY 排序</li>
-</ol>
-</li>
-<li>WHERE执行的时候还没有分组,因此不能在WHERE中使用聚合函数</li>
-</ul>
-</li>
-</ol>
-<hr>
-<h3 id="3-子查询"><a href="#3-子查询" class="headerlink" title="3.子查询"></a>3.子查询</h3><ul>
-<li><p>1.子查询(内部查询):写在小括号里,可以是WHERE或者HAVING或者FROM中</p>
-<ol>
-<li>单行子查询 &#x3D; &lt;&gt; MIN MAX COUNT<ul>
-<li>很明显需要先求得一个特定数值,然后再代入过滤条件得那种  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 1.查询入职日期最早的员工姓名，入职日期</span></span><br><span class="line"><span class="keyword">SELECT</span> ename, hiredate</span><br><span class="line">    <span class="keyword">FROM</span> emp</span><br><span class="line">    <span class="keyword">WHERE</span> hiredate <span class="operator">=</span> (<span class="keyword">SELECT</span> <span class="built_in">MIN</span>(hiredate) <span class="keyword">FROM</span> emp);</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li>多行子查询 IN &gt;ANY &lt;ANY &#x3D;ANY(和IN一样) ALL(很少用)<ul>
-<li>ANY:任意一个,ALL:任何一个</li>
-<li>IN:等于任意一个  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查询哪些人是经理</span></span><br><span class="line"><span class="comment">-- 方法1 多表内连</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> e2.ename </span><br><span class="line">    <span class="keyword">FROM</span> emp e1 </span><br><span class="line">    <span class="keyword">JOIN</span> emp e2 <span class="keyword">ON</span> e1.mgr <span class="operator">=</span> e2.empno; </span><br><span class="line"></span><br><span class="line"><span class="comment">-- 方法2 多行子查询 (empno等于任意一个mgrList里面得empcode)</span></span><br><span class="line"><span class="keyword">SELECT</span> ename,sal</span><br><span class="line">    <span class="keyword">FROM</span> emp</span><br><span class="line">    <span class="keyword">WHERE</span> empno <span class="keyword">IN</span> (<span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> mgr <span class="keyword">FROM</span> emp);</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><h2 id="多列子查询"><a href="#多列子查询" class="headerlink" title="多列子查询 "></a>多列子查询 </h2> <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 44、查询和“李军”同性别并同班的同学Sname.</span></span><br><span class="line"><span class="keyword">SELECT</span> sname</span><br><span class="line"> <span class="keyword">FROM</span> student</span><br><span class="line"> <span class="keyword">WHERE</span> (ssex,class) <span class="operator">=</span> (<span class="keyword">SELECT</span> ssex, class <span class="keyword">FROM</span> student <span class="keyword">WHERE</span> sname <span class="operator">=</span> <span class="string">&#x27;李军&#x27;</span>);	</span><br></pre></td></tr></table></figure>
-<ol>
-<li>多列子查询通常用IN操作符完成,多列子查询可以在一个条件表达式内同时和子查询的多个列进行比较 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查询职位及经理和10部门任意一个员工职位[及]经理相同的员工姓名</span></span><br><span class="line"><span class="comment">-- 1. 多列子查询,与操作</span></span><br><span class="line"><span class="keyword">SELECT</span> ename, job</span><br><span class="line">    <span class="keyword">FROM</span> emp</span><br><span class="line">    <span class="keyword">WHERE</span> (job, mgr) <span class="keyword">IN</span> (<span class="keyword">SELECT</span> job,mgr <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> deptno <span class="operator">=</span> <span class="number">10</span>)</span><br><span class="line">    <span class="keyword">AND</span> deptno<span class="operator">!=</span><span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询职位及经理和10部门任意一个员工职位[或]经理相同的员工姓名</span></span><br><span class="line"><span class="comment">-- 2. 多列子查询,或操作,只能分开写多个</span></span><br><span class="line"><span class="keyword">SELECT</span> ename, job</span><br><span class="line">    <span class="keyword">FROM</span> emp</span><br><span class="line">    <span class="keyword">WHERE</span> deptno<span class="operator">!=</span><span class="number">10</span></span><br><span class="line">    <span class="keyword">AND</span> (job <span class="keyword">IN</span>(<span class="keyword">SELECT</span> job <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> deptno <span class="operator">=</span> <span class="number">10</span>)</span><br><span class="line">    <span class="keyword">OR</span> mgr <span class="keyword">IN</span>(<span class="keyword">SELECT</span> mgr <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> deptno <span class="operator">=</span> <span class="number">10</span>));</span><br></pre></td></tr></table></figure></li>
+<li>关于return<ol>
+<li>即使返回类型为void,依然可以return,相当于结束这个方法</li>
+<li>但是return后面如果有其他代码,会出现无法执行到的编译错误</li>
 </ol>
 </li>
 </ol>
-<hr>
+<h1 id="7-类的继承-接口-抽象类"><a href="#7-类的继承-接口-抽象类" class="headerlink" title="7 类的继承, 接口, 抽象类"></a>7 类的继承, 接口, 抽象类</h1><ol start="4">
+<li>Override 重写<ol>
+<li>概念<ol>
+<li>方法签名相同(包含了方法的名称、参数列表以及返回类型)</li>
+<li>返回类型可以相同或者子类</li>
+<li>修饰子相同或更宽泛(protect-&gt;public)</li>
+<li>抛出异常相同或更狭窄<ol>
+<li>若父类为IOException</li>
+<li>子类可以<ol>
+<li>抛出相同异常</li>
+<li>抛出FileNotFound等子异常</li>
+<li>干脆不要抛出异常</li>
+</ol>
 </li>
-</ul>
-<ol start="2">
-<li>子查询中的 <code>NULL</code> 与 <code>NOT IN</code><ul>
-<li>在子查询中,只要<code>NULL</code>有可能成为子查询结果集合中的一部分，就不能使用 <code>NOT IN</code> 运算符 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查找那些人不是经理</span></span><br><span class="line"><span class="keyword">SELECT</span> ename</span><br><span class="line">    <span class="keyword">FROM</span> emp</span><br><span class="line">    <span class="keyword">WHERE</span> empno <span class="keyword">NOT</span> <span class="keyword">IN</span> (<span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> mgr <span class="keyword">FROM</span> emp); <span class="comment">-- 0条数据</span></span><br><span class="line">    <span class="comment">-- BOSS没有经理,因此子查询返回得结果有一条是NULL,这条空值导致主查询没有记录返回</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--正确写法</span></span><br><span class="line"><span class="keyword">SELECT</span> ename</span><br><span class="line">    <span class="keyword">FROM</span> emp</span><br><span class="line">    <span class="keyword">WHERE</span> empno <span class="keyword">NOT</span> <span class="keyword">IN</span>(<span class="keyword">SELECT</span> mgr <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> mgr <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span>);</span><br><span class="line">    <span class="comment">-- 在使用NOT IN时要确保子查询得结果中没有NULL</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><code>final</code>和<code>static</code>的方法不能重写<ul>
+<li>但是可以创建同名的static方法</li>
 </ul>
 </li>
 </ol>
-<hr>
-<ol start="3">
-<li>在<code>FROM</code>中使用子查询,更详细得说是在<code>JOIN</code>后面用子查询创建了一个临时表<ul>
-<li>使用场景: 子查询的表需要提供聚合函数(AVG等等)用到<code>GROUP BY</code>,主表需要和子查询的表连接</li>
-<li>临时表需要别名,如果需要在主表用到子查询的聚合函数,那这个聚合函数也需要别名  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查询比自己部门平均工资高的员工姓名，工资，部门编号，部门平均工资</span></span><br><span class="line"><span class="comment">-- 临时表别名: b, 聚合函数别名: 平均工资</span></span><br><span class="line"><span class="keyword">SELECT</span> ename,job,b.平均工资</span><br><span class="line">    <span class="keyword">FROM</span> emp a</span><br><span class="line">    <span class="keyword">JOIN</span> (<span class="keyword">SELECT</span> deptno, <span class="built_in">AVG</span>(sal) 平均工资 <span class="keyword">FROM</span> emp <span class="keyword">GROUP</span> <span class="keyword">BY</span> deptno) b</span><br><span class="line">    <span class="keyword">ON</span> a.deptno <span class="operator">=</span> b.deptno</span><br><span class="line">    <span class="keyword">WHERE</span> a.sal <span class="operator">&gt;</span> b.平均工资;</span><br></pre></td></tr></table></figure></li>
+</li>
+<li>多态<ol>
+<li>编译时多态 Overload 重载<ol>
+<li>只有参数部分是可变的<ol>
+<li>参数顺序不同可以重载(需要不同参数类型,因为重载不看参数名称)</li>
+<li>参数数量</li>
+<li>参数类型</li>
+</ol>
+</li>
+<li>不能变的<ol>
+<li>不能只变参数名称</li>
+<li>不能通过改变返回类型实现多态</li>
+<li>不能通过改变修饰子来实现多态</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>运行时多态 (基于继承) B-&gt;A, A a &#x3D; new B();<ol>
+<li>方法调用<ol>
+<li>名义上是A对象,因此不能调用B的方法,不能a.funB(),会编译错误</li>
+<li>实际上是B对象,可以通过转型来变成B,可以(B)a.funB()<ul>
+<li>由于B是A的子类,因此<code>(A)b</code>永远是可行的</li>
+<li>仅当上面这一种情况,<code>(B)a</code>不报错</li>
 </ul>
+</li>
+<li>若B类重写过A类方法test(),则a.test()执行的是B类重写过的方法</li>
+</ol>
+</li>
+<li>参数<ol>
+<li>a.name -&gt; A</li>
+</ol>
+</li>
+<li>优点<ul>
+<li>父类或接口的代码可以重用于多个子类或实现类，减少了代码重复</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
 </li>
 </ol>
 
@@ -302,11 +298,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MYSQL</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Java SE</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Oracle</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Java Silver</a>
         		</li>
       		
 		</ul>
@@ -318,7 +314,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/数据库//" class="article-tag-list-link color4">数据库</a>
+        			<a href="/categories/JAVA//" class="article-tag-list-link color5">JAVA</a>
         		</li>
       		
 		</ul>
@@ -373,7 +369,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2024/03/03/14.0815/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2025/05/24/28.Java%E9%93%B6%E7%89%8C%E5%A4%8D%E4%B9%A067/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -387,18 +383,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2024/03/03/15.0816/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/05/24/29.Java%E9%93%B6%E7%89%8C%E5%A4%8D%E4%B9%A08910/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          数据库 3
+          Java银牌复习8910
         
       </div>
     </a>
   
   
-    <a href="/2024/03/03/13.0814/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">数据库 1</div>
+    <a href="/2025/05/24/27.Java%E9%93%B6%E7%89%8C%E5%A4%8D%E4%B9%A012345/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Java银牌复习12345</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -425,7 +421,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0815"><span class="toc-number">1.</span> <span class="toc-text">0815</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#A-MYSQL%E4%B8%8EORACLE"><span class="toc-number">1.1.</span> <span class="toc-text">A. MYSQL与ORACLE</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%BF%9E%E6%8E%A5"><span class="toc-number">1.1.1.</span> <span class="toc-text">1. 连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%BB%84%E5%90%88"><span class="toc-number">1.1.2.</span> <span class="toc-text">2.组合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.1.3.</span> <span class="toc-text">3.子查询</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E5%88%97%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.2.</span> <span class="toc-text">多列子查询 </span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E5%AF%B9%E8%B1%A1%E4%B8%8E%E6%96%B9%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">6 对象与方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E7%B1%BB%E7%9A%84%E7%BB%A7%E6%89%BF-%E6%8E%A5%E5%8F%A3-%E6%8A%BD%E8%B1%A1%E7%B1%BB"><span class="toc-number">2.</span> <span class="toc-text">7 类的继承, 接口, 抽象类</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -454,7 +450,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2024 Hitokui
+    		&copy; 2025 Hitokui
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -533,11 +529,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Java SE</a>
+                <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
+                <a href="javascript:void(0)" class="js-tag color3">Java SE</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -569,7 +565,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Java Silver</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Mac</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Java Gold</a>
               </li>
             
             <div class="clearfix"></div>
